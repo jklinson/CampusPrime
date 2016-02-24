@@ -1,0 +1,289 @@
+.dashboard-page {
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+    background: #ecf0f1;
+    color: #666;
+
+    /*
+     * Base structure
+     */
+
+
+    /*
+     * Global add-ons
+     */
+
+    .sub-header {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    /*
+     * Top navigation
+     * Hide default border to remove 1px line.
+     */
+    .navbar-fixed-top {
+      border: 0;
+    }
+
+    /*
+     * Sidebar
+     */
+
+    /* Hide for mobile, show later */
+    .sidebar {
+
+      .user-avatar {
+      	margin: 10px 0 10px 0;
+      }
+
+      .brand {
+      	padding-top: 15px;
+      }
+
+      display: none;
+
+      color: #FFF;
+
+      h2 {
+      	font-weight: 300;
+      	small {
+      		color: rgba(255, 255, 255, 0.7);
+      	}
+      }
+    }
+    .sidebar.open {
+        position: fixed;
+        top: 0px;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: block;
+        padding: 0 20px 20px 20px;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        background-color: lighten(@brand-primary, 0%); //#f5f5f5;
+        border-right: 1px solid #eee;
+    }
+
+    @media (min-width: 768px) {
+      .sidebar {
+        position: fixed;
+        top: 0px;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: block;
+        padding: 0 20px 20px 20px;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        background-color: lighten(@brand-primary, 0%); //#f5f5f5;
+        border-right: 1px solid #eee;
+      }
+    }
+
+    .nav > li > a:hover, .nav > li > a:focus {
+    	background: darken(@brand-primary, 5%);
+    }
+
+    /* Sidebar navigation */
+    .nav-sidebar {
+      margin-right: -21px; /* 20px padding + 1px border */
+      margin-bottom: 20px;
+      margin-left: -20px;
+      margin-top: 20px;
+    }
+    .nav-sidebar > li > a {
+      color: #fff;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+    .nav-sidebar > .active > a,
+    .nav-sidebar > .active > a:hover,
+    .nav-sidebar > .active > a:focus {
+      color: #fff;
+      background-color: darken(@brand-primary, 5%);
+    }
+
+
+    /*
+     * Main content
+     */
+
+    .main {
+      padding: 20px;
+      position: absolute;
+      top: 60px;
+      bottom: 0px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      .jumbotron {
+        background: #FFF;
+        margin-top: 20px;
+        padding-right: 30px;
+        padding-left: 30px;
+      }
+    }
+    @media (min-width: 768px) {
+      .main {
+        padding-right: 20px;
+        padding-left: 40px;
+      }
+    }
+    @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) { 
+      padding-right:10px;
+    }
+
+    .main .page-header {
+      margin-top: 0;
+    }
+
+
+    /*
+     * Placeholder dashboard ideas
+     */
+
+    .placeholders {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .placeholders h4 {
+      margin-bottom: 0;
+    }
+    .placeholder {
+      margin-bottom: 20px;
+    }
+    .placeholder img {
+      display: inline-block;
+      border-radius: 50%;
+    }
+
+
+    .bg-fade {
+      font-size: 500px;
+      color: rgba(0,0,0,0.1);
+      position: absolute;
+      right: -100px;
+      top: 200px;
+    }
+
+}
+#content-wrapper {
+  padding-left: 0;
+  margin-left: 0;
+  width: 100%;
+  height: auto;
+}
+@media only screen and (min-width: 561px) {
+  #page-wrapper.open {
+    padding-left: 250px;
+  }
+}
+@media only screen and (max-width: 560px) {
+  #page-wrapper.open {
+    padding-left: 70px;
+  }
+}
+#page-wrapper.open #sidebar-wrapper {
+  left: 150px;
+}
+
+/**
+ * Hamburg Menu
+ * When the class of 'hamburg' is applied to the body tag of the document, 
+ * the sidebar changes it's style to attempt to mimic a menu on a phone app,
+ * where the content is overlaying the content, rather than push it.
+ */
+@media only screen and (max-width: 560px) {
+  body.hamburg #page-wrapper {
+    padding-left: 0;
+  }
+  body.hamburg #page-wrapper:not(.open) #sidebar-wrapper {
+    position: absolute;
+    left: -100px;
+  }
+  body.hamburg #page-wrapper:not(.open) ul.sidebar .sidebar-title.separator {
+    display: none;
+  }
+  body.hamburg #page-wrapper.open #sidebar-wrapper {
+    position: fixed;
+  }
+  body.hamburg #page-wrapper.open #sidebar-wrapper ul.sidebar li.sidebar-main {
+    margin-left: 0px;
+  }
+  body.hamburg #sidebar-wrapper ul.sidebar li.sidebar-main,
+  body.hamburg .row.header .meta {
+    margin-left: 70px;
+  }
+  body.hamburg #sidebar-wrapper ul.sidebar li.sidebar-main,
+  body.hamburg #page-wrapper.open #sidebar-wrapper ul.sidebar li.sidebar-main {
+    transition: margin-left 0.4s ease 0s;
+  }
+}
+
+/**
+ * Header
+ */
+.row.header {
+  height: 60px;
+  background: #fff;
+  margin-bottom: 15px;
+}
+.row.header > div:last-child {
+  padding-right: 0;
+}
+.row.header .meta .page {
+  font-size: 17px;
+  padding-top: 11px;
+}
+.row.header .meta .breadcrumb-links {
+  font-size: 10px;
+}
+.row.header .meta div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.menu-icon {
+      display:block;
+}
+@media (min-width: 768px) {
+    .row.header {
+      margin-left: 20%;
+    }
+    .menu-icon {
+      display:none;
+    }
+}
+@media (min-width: 992px) {
+    .row.header {
+      margin-left: 12%;
+    }
+    .menu-icon {
+      display:none;
+    }
+}
+.top20{
+  padding-top:20px;
+}
+.closeBar.open  {
+  display:block;
+  padding-top:10px;
+  float:right;
+  margin-right: -15px;
+}
+@media (min-width: 768px) {
+  .closeBar{
+    display:none;
+  }
+  .closeBar.open{
+    display:none;
+  }  
+}
+
+
