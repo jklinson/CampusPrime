@@ -2,19 +2,19 @@
 
 /**
  * @ngdoc function
- * @name campusPrime.controller:MainCtrl
+ * @name campusPrime.controller:LoginCtrl
  * @description
- * # MainCtrl
+ * # LoginCtrl
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-  .controller('LoginCtrl', function($scope, $location) {
+	.controller('LoginCtrl', function($scope, $location) {
 
-    $scope.submit = function() {
+		$scope.submit = function() {
 
-      $location.path('/dashboard');
+			$location.path('/dashboard');
 
-      return false;
-    }
+			return false;
+		}
 
-  });
+	});

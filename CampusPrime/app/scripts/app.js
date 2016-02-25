@@ -17,7 +17,7 @@ angular
   ])
   .config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.when('/dashboard', '/dashboard/overview');
+    $urlRouterProvider.when('/dashboard', '/dashboard/news');
     $urlRouterProvider.otherwise('/login');
 
     $stateProvider
@@ -26,34 +26,46 @@ angular
         url: '',
         templateUrl: 'views/base.html'
       })
-        .state('login', {
-          url: '/login',
-          parent: 'base',
-          templateUrl: 'views/login.html',
-          controller: 'LoginCtrl'
-        })
-        .state('register', {
-          url: '/register',
-          parent: 'base',
-          templateUrl: 'views/register.html',
-          controller: 'RegisterCtrl'
-        })
-        .state('dashboard', {
-          url: '/dashboard',
-          parent: 'base',
-          templateUrl: 'views/dashboard.html',
-          controller: 'DashboardCtrl'
-        })
-          .state('overview', {
-            url: '/overview',
-            parent: 'dashboard',
-            templateUrl: 'views/dashboard/news.html',
-            controller: 'NewsCtrl'
-          })
-          .state('reports', {
-            url: '/reports',
-            parent: 'dashboard',
-            templateUrl: 'views/dashboard/writeups.html'
-          });
-
+      .state('login', {
+        url: '/login',
+        parent: 'base',
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
+      .state('register', {
+        url: '/register',
+        parent: 'base',
+        templateUrl: 'views/register.html',
+        controller: 'RegisterCtrl'
+      })
+      .state('dashboard', {
+        url: '/dashboard',
+        parent: 'base',
+        templateUrl: 'views/dashboard.html',
+        controller: 'DashboardCtrl'
+      })
+      .state('news', {
+        url: '/news',
+        parent: 'dashboard',
+        templateUrl: 'views/dashboard/news.html',
+        controller: 'NewsCtrl'
+      })
+      .state('writeups', {
+        url: '/writeups',
+        parent: 'dashboard',
+        templateUrl: 'views/dashboard/writeups.html',
+        controller: 'WriteupCtrl'
+      })
+      .state('notification', {
+        url: '/notification',
+        parent: 'dashboard',
+        templateUrl: 'views/dashboard/notification.html',
+        controller: 'NotificationCtrl'
+      })
+      .state('calendar', {
+        url: '/calendar',
+        parent: 'dashboard',
+        templateUrl: 'views/dashboard/calendar.html',
+        controller: 'CalendarCtrl'
+      });
   });

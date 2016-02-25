@@ -1,14 +1,35 @@
-<div>
-	<a ui-sref="overview" class="pull-right btn btn-primary btn-outline btn-rounded">Back to Overview</a>
-	<h2>Reports <small>Work with Chart.js and D3</small></h2>
-	<span class="glyphicon glyphicon-dashboard bg-fade"></span>
-	<div class="jumbotron">
-		<div class="container">
-			<h1>Add Charts here</h1>
-			<p>You can use C3.js or Chart.js</p>
-			<p>
-				<a class="btn btn-primary btn-lg btn-outline btn-rounded">Learn more</a>
-			</p>
+<div class="row">	
+	<div class="col-lg-9 panel panel-default">
+		<div class="panel-body">
+			<div ng-repeat="data in writeups"class="media">
+		  		<div class="media-left">
+		    		<a href="#">
+		      			<img class="media-object" width="80px" ng-src={{data.img}} alt="Image not found">
+		    		</a>
+		  		</div>
+		  		<div class="media-body">
+		    		<h4 class="media-heading">{{data.title}}</h4>
+		    		<p>{{data.description}}</p>
+		    		<img  class ="pull-right" width="20px" src="images/claps.png">
+		    		<span class ="pull-right">{{data.clapCount}}</span>  
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-lg-3 panel panel-default">
+		<div class="panel-body">
+			<div class="row">
+				<div class="list-group">
+				  <a href="#" class="list-group-item active">All Writeups</a>
+				  <a href="#" class="list-group-item">Literatur</a>
+				  <a href="#" class="list-group-item">Drawing</a>
+				  <a href="#" class="list-group-item">Pics</a>
+				  <a href="#" class="list-group-item">Videos</a>
+				  <a href="#" class="list-group-item">My Writeups</a>
+				  <a href="#" class="list-group-item">Pending</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

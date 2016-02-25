@@ -5,15 +5,15 @@
       <div class="glyphicon glyphicon-menu-left col-xs-2 closeBar" ng-class="{'open': toggle}" ng-click="toggleSidebar()"></div>        
        <div class="text-center">
         <h2 class="brand">Campus Prime</h2>
-        <img src="images/sng.jpg" class="user-avatar" /><br />
+        <img src="images/sng.jpg" width="100%" class="img-circle" /><br />
         <a ui-sref="login" class="btn btn-white btn-outline btn-rounded btn-sm">Logout</a>
       </div>
 
       <ul class="nav nav-sidebar">
-        <li ng-class="{active: $state.includes('overview')}"><a ui-sref="overview">News <span class="sr-only">(current)</span></a></li>
-        <li ng-class="{active: $state.includes('reports')}"><a ui-sref="reports">Write-ups</a></li>
-        <li ng-class="{active: $state.includes('reports')}"><a ui-sref="reports">Notifications</a></li>
-        <li ng-class="{active: $state.includes('reports')}"><a ui-sref="reports">Calendar</a></li>
+        <li ng-class="{active: $state.includes('news')}"><a ui-sref="news">News <span class="sr-only">(current)</span></a></li>
+        <li ng-class="{active: $state.includes('writeups')}"><a ui-sref="writeups">Write-ups</a></li>
+        <li ng-class="{active: $state.includes('notification')}"><a ui-sref="notification">Notifications</a></li>
+        <li ng-class="{active: $state.includes('calendar')}"><a ui-sref="calendar">Calendar</a></li>
       </ul>
 
     </div>
@@ -24,7 +24,7 @@
             </div>            
             <div  class="meta col-xs-6 col-xs-8">
               <div class="page">
-                Dashboard
+                {{currentPage}}
               </div>
             </div>
           </div>

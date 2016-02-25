@@ -8,8 +8,8 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-  .controller('RegisterCtrl', function($scope, $location) {
+	.controller('RegisterCtrl', function($scope, $location) {
 
-   	$scope.selectedRole		= 'Student';
+		$scope.selectedRole = 'Student';
 
-  });
+	});
