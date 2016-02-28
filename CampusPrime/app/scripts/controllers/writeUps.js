@@ -15,7 +15,7 @@ angular.module('campusPrime')
 
 		$scope.fetchWriteUps = function() {
 
-			for (var i = 0; i < 5; i++) {
+			for (var i = 0; i < 10; i++) {
 				var writeup = {};
 				writeup.img = 'images/sngce_emblom.jpg';
 				writeup.title = 'Write up titles ' + i;

@@ -16,7 +16,7 @@ angular.module('campusPrime')
 
         $scope.fetchNews = function() {
 
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 10; i++) {
 
                 var news = {};
                 news.title = 'Title ' + i;

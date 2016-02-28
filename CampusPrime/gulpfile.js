@@ -15,14 +15,14 @@ gulp.task('styles', function() {
 });
 
 gulp.task('jshint', function() {
-  return gulp.src('app/scripts/app.js')
+  return gulp.src('app/scripts/**/*.js')
     .pipe($.jshint())
     //.pipe($.jshint.reporter('jshint-stylish'))
     //.pipe($.jshint.reporter('fail'));
 });
 
 gulp.task('jscs', function() {
-  return gulp.src('app/scripts/app.js')
+  return gulp.src('app/scripts/**/*.js')
     .pipe($.jscs());
 });
 
