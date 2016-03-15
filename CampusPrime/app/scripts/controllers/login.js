@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('LoginCtrl', function($scope, $location, $http) {
+	.controller('LoginCtrl', function($scope, $location, $http, AlertService) {
 
 
 		$scope.user 	= {};
@@ -25,15 +25,16 @@ angular.module('campusPrime')
 			    // this callback will be called asynchronously
 			    // when the response is available
 			    console.log('In successCallback '+JSON.stringify(response));
-			    if(response.data.Status === "Success"){
+			    if(response.data.status === Constants.success){
 			    	$location.path('/dashboard');
 			    }else{
-			    	alert(response.data.Message);
+			    	AlertService.showAlert("Login Failed!", response.data.Message);
 			    }
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs
 			    // or server returns response with an error status.
 			    console.log('In errorCallback '+JSON.stringify(response));
+			    AlertService.showAlert("Login Failed!", "Something wrong happened, Please try again later.");
 			  });
 		}
 		

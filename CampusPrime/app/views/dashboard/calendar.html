@@ -1,0 +1,46 @@
+<div class="row">	
+	<div class="col-lg-12 panel panel-default">
+		<div class="panel-body">
+			<div style="display:inline-block; min-height:290px;">
+      			<uib-datepicker ng-model="dt" class="well well-sm" datepicker-options="inlineOptions"></uib-datepicker>
+    		</div>
+		</div>
+		<button type="button" class="btn btn-primary btn-circle btn-lg pull-right btn-floating pull-right"><i class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#calendarPopup"></i></button>		
+	</div>
+	<div class="modal fade" id="calendarPopup" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">New Writeup</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+	          <div class="form-group">
+	            <label class="control-label">Title</label>
+	            <input type="text" class="form-control" ng-model="writeUp.title">
+	          </div>
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">Description:</label>
+	            <textarea class="form-control" ng-model="writeUp.description" ></textarea>
+	          </div>
+	          <div class="form-group">
+	            <label class="control-label">WriteUp Type:</label>
+	            <select class="form-control" ng-model="writeUp.type">
+      				<option ng-repeat="option in writeupTypes" value="{{option}}">{{option}}</option>
+    			</select>
+	          </div>
+	          <div class="form-group">
+	            <label class="control-label">Select file</label>
+	            <input class="form-control" type='file' file-model='writeUp.file'>
+	          </div>	          
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        <button type="button" class="btn btn-primary" ng-click="uploadWriteUp()">Upload</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>

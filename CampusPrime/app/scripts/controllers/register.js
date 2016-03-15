@@ -30,7 +30,7 @@ angular.module('campusPrime')
 			    // this callback will be called asynchronously
 			    // when the response is available
 			    console.log('In successCallback '+JSON.stringify(response));
-			    if(response.data.Status === "Success"){
+			    if(response.data.status === Constants.success){
 			    	$location.path('/login');
 			    }else{
 			    	alert(response.data.Message);

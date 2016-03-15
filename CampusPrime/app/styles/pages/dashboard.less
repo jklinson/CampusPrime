@@ -303,6 +303,8 @@
   font-size: 18px;
   line-height: 1.33;
   border-radius: 25px;
+  position: fixed;
+  bottom: 50px;
 }
 .btn-circle.btn-xl {
   width: 70px;
@@ -311,4 +313,25 @@
   font-size: 24px;
   line-height: 1.33;
   border-radius: 35px;
+}
+.btn-floating {
+    display: inline-block;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    width: 37px;
+    height: 37px;
+    line-height: 37px;
+    padding: 0;
+    background-color: #26a69a;
+    border-radius: 50%;
+    transition: .3s;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.h-scroll {
+    height: 80vh; /* %-height of the viewport */
+    overflow-y: scroll;
 }

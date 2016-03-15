@@ -1,16 +1,17 @@
 <!--  <uib-pager total-items="totalItems" ng-model="currentPage"></uib-pager> -->
 <div class="row">
-	<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+	<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 h-scroll">
 		<!-- <div class="row">	
 			<uib-pager total-items="totalItems" ng-model="currentPage"></uib-pager>
 		</div> -->
+		<button type="button" class="btn btn-primary btn-circle btn-lg pull-right btn-floating pull-right"><i class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#newsPopup"></i></button>
 		<div class="row"> 	
 			<div class="jumbotron">
 				<uib-carousel interval="myInterval" no-wrap="noWrapSlides">
-			      <uib-slide ng-repeat="eachNews in news" active="eachNews.active" index="eachNews.id">
+			      <uib-slide ng-repeat="eachNews in newses" active="eachNews.active" index="eachNews.id">
 			        <div class="row">
 							<div class="col-xs-12">
-								<span class="col-xs-6 text-left ">{{eachNews.date}}</span>
+								<span class="col-xs-6 text-left " ng-bind="getFormatedDate(eachNews.publishedDate)"></span>
 								<span class="col-xs-6 text-right">{{eachNews.publishedBy}}</span>		
 							</div>
 						</div>
@@ -19,11 +20,11 @@
 								<span class="text-center"><h3>{{eachNews.title}}</h3></span>
 							</div>
 						</div>
-						<!-- <div class="row">
+						<div class="row">
 							<div class="col-xs-12 text-center">
-								<img src="images/sng.JPG">
+								<img width="50%" ng-src={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+eachNews.fileId}} alt="Image not found">
 							</div>
-						</div> -->
+						</div> 
 						<div class="row">
 							<div class="col-xs-12 top20">
 								<span class="text-center"><p>{{eachNews.description}}<p></span>
@@ -34,8 +35,7 @@
 			      </uib-slide>
 			    </uib-carousel>
 			</div>
-		</div>
-		<button type="button" class="btn btn-primary btn-circle btn-lg pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+		</div>		
 	</div>
 	<div class="col-lg-3 col-sm-3 col-md-3 hidden-xs">
 		<div class="jumbotron">
@@ -50,5 +50,35 @@
 				</div>				
 			</div>
 		</div>
+	</div>
+	<div class="modal fade" id="newsPopup" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">New news</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+	          <div class="form-group">
+	            <label class="control-label">Title</label>
+	            <input type="text" class="form-control" ng-model="news.title">
+	          </div>
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">Description:</label>
+	            <textarea class="form-control" ng-model="news.description" ></textarea>
+	          </div>	          
+	          <div class="form-group">
+	            <label class="control-label">Select file</label>
+	            <input class="form-control" type='file' file-model='news.file'>
+	          </div>	          
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        <button type="button" class="btn btn-primary" ng-click="uploadNews()">Upload</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 </div>
