@@ -61,7 +61,7 @@ angular.module('campusPrime')
 			    // called asynchronously if an error occurs
 			    // or server returns response with an error status.
 			    console.log('In errorCallback '+JSON.stringify(response));
-			    AlertService.showAlert("Upload Failed!", "Something wrong happened while saving you file, Please try again later.");
+			    AlertService.showAlert("Failure!", "Something wrong happened while saving you file, Please try again later.");
 			  });
 		}
 
@@ -101,4 +101,8 @@ angular.module('campusPrime')
 			  });
 
 		}
+		$scope.getFormatedDate      = function(notificationDate){
+            var date = new Date(parseInt(notificationDate));
+            return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
+        }
 	});

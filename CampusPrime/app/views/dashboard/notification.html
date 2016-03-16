@@ -5,7 +5,9 @@
 		      <div class="panel-body">
 		      	<p>{{eachNot.description}}</p></br>
 		      	<a ng-if="eachNot.fileId>0"ng-href={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+eachNot.fileId}}>
-		      		Clcik here to access the attachment</a>
+		      		Clcik here to access the attachment</a></br>
+		      	<span class="pull-right">Posted by:- {{eachNot.publishedUser}}</span></br>
+		      	<span class="pull-right" >Posted date:- {{getFormatedDate(eachNot.publishedDate)}}</span>
 		      </div>
 		    </div>		    
 	</div>
