@@ -119,7 +119,7 @@ public class CampusPrimeService {
 		System.out.println("fileID = "+fileId);
 		FileManager fileManager = new FileManager();
 		String fileName = "noImage.jpg";
-		String filePath = "D:/Linson/WorkSpace/WebApps/FileUpload/noImage.jpg";
+		String filePath = Constants.FILE_UPLOAP_PATH+"noImage.jpg";
 		try {
 			FileObjects fileObject  = fileManager.getFile(fileId);
 			fileName = fileObject.getFileName();
