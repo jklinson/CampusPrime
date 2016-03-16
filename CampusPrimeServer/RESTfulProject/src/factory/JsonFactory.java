@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import models.NewsObjects;
+import models.NotificationObjects;
 import models.WriteUpObjects;
 import utility.Constants;
 
@@ -47,6 +48,15 @@ public class JsonFactory {
 		createSuccesseJson(json, "SuccesFully retrieved the news details.");
 		Gson gson = new Gson();
 		json.addProperty("news", gson.toJson(newsData));
+		return json.toString();
+		
+	}
+	public static String createNotificationArray(ArrayList<NotificationObjects> notificationData){
+		
+		JsonObject json = new JsonObject();
+		createSuccesseJson(json, "SuccesFully retrieved the notification details.");
+		Gson gson = new Gson();
+		json.addProperty("notifications", gson.toJson(notificationData));
 		return json.toString();
 		
 	}

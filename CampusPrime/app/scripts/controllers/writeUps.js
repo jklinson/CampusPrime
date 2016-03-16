@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('WriteupCtrl', function($scope, $rootScope, $location, $http, AlertService ) {
+	.controller('WriteupCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService ) {
 
 		$rootScope.currentPage = 'Write-Ups';
 		$scope.writeups = [];// write-up array object for showing the list, populate after fetching from server
@@ -71,7 +71,7 @@ angular.module('campusPrime')
 			$scope.writeUp.fileId = fileId;
 			$scope.writeUp.audienceId = 1;
 			$scope.writeUp.isApproved = 1;
-			$scope.writeUp.publishedBy = 1;
+			$scope.writeUp.publishedBy = UserService.getUserId();
 			$scope.writeUp.publishedDate = new Date().getTime();
 			console.log($scope.writeUp);
 			$http({

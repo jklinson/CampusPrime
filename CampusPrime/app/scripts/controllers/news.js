@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-    .controller('NewsCtrl', function($scope, $rootScope, $location, $http, AlertService) {
+    .controller('NewsCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService) {
 
         $rootScope.currentPage = 'News';
         $scope.myInterval = 5000;
@@ -67,7 +67,7 @@ angular.module('campusPrime')
             $scope.news.fileId = fileId;
             $scope.news.audienceId = 1;
             $scope.news.isApproved = 1;
-            $scope.news.publishedBy = 1;
+            $scope.news.publishedBy = UserService.getUserId();
             $scope.news.publishedDate = new Date().getTime();
             console.log($scope.news);
             $http({

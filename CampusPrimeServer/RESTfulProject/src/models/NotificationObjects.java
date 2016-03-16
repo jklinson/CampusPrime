@@ -2,9 +2,9 @@ package models;
 
 import com.google.gson.JsonObject;
 
-public class NewsObjects {
+public class NotificationObjects {
 
-	private int newsId;
+	private int notificationId;
 	private String title;
 	private String description;
 	private int publishedBy;
@@ -14,9 +14,9 @@ public class NewsObjects {
 	private int fileId;
 	private int isApproved;
 	
-	public NewsObjects(JsonObject json) {
+	public NotificationObjects(JsonObject json) {
 		
-		this.setNewsId(json.has("newsId")? json.get("newsId").getAsInt():-1);
+		this.setNotificationId(json.has("notificationId")? json.get("notificationId").getAsInt():-1);
 		this.setTitle(json.has("title")? json.get("title").getAsString():"");
 		this.setDescription(json.has("description")? json.get("description").getAsString():"");
 		this.setPublishedBy(json.has("publishedBy")? json.get("publishedBy").getAsInt():-1);
@@ -26,19 +26,19 @@ public class NewsObjects {
 		this.setIsApproved(json.has("isApproved")? json.get("isApproved").getAsInt():-1);
 		
 	}
-	public NewsObjects() {
+	public NotificationObjects() {
 	}
 	/**
-	 * @return the newsId
+	 * @return the notificationId
 	 */
-	public int getNewsId() {
-		return newsId;
+	public int getNotificationId() {
+		return notificationId;
 	}
 	/**
-	 * @param newsId the newsId to set
+	 * @param notificationId the notificationId to set
 	 */
-	public void setNewsId(int newsId) {
-		this.newsId = newsId;
+	public void setNotificationId(int notificationId) {
+		this.notificationId = notificationId;
 	}
 	/**
 	 * @return the title

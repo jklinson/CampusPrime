@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('LoginCtrl', function($scope, $location, $http, AlertService) {
+	.controller('LoginCtrl', function($scope, $location, $http, AlertService, UserService) {
 
 
 		$scope.user 	= {};
@@ -26,6 +26,9 @@ angular.module('campusPrime')
 			    // when the response is available
 			    console.log('In successCallback '+JSON.stringify(response));
 			    if(response.data.status === Constants.success){
+			    	UserService.setUser(response.data.user);
+			    	console.log('UserService '+ UserService.getUser());
+			    	console.log('UserService '+ UserService.getUserId());
 			    	$location.path('/dashboard');
 			    }else{
 			    	AlertService.showAlert("Login Failed!", response.data.Message);

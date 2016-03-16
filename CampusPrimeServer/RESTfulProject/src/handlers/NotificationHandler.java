@@ -5,30 +5,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import models.NewsObjects;
+import models.NotificationObjects;
 
-public class NewsHandler {
+public class NotificationHandler {
 
-	public String tableName = "news";
-	public String coloumnNames = "newsId,title,description,publishedBy,publishedDate,"
+	public String tableName = "notifications";
+	public String coloumnNames = "notificationId,title,description,publishedBy,publishedDate,"
 			+ "audienceId,fileId,isAproved";
 	public String insertStmnt = "INSERT INTO "+tableName+" (title,description,publishedBy,publishedDate,"
 			+ "audienceId,fileId,isAproved) VALUES ";
 	
-	public ArrayList<NewsObjects> GetNews(Connection connection) throws Exception
+	public ArrayList<NotificationObjects> GetNotifications(Connection connection) throws Exception
 	{
-		ArrayList<NewsObjects> newsData = new ArrayList<NewsObjects>();
+		ArrayList<NotificationObjects> newsData = new ArrayList<NotificationObjects>();
 		try
 		{			
-			String sql = "select news.newsId,news.title,news.description,news.publishedBy,news.publishedDate,"
-			+ "news.audienceId,news.fileId,news.isAproved,users.name from news inner join users on news.publishedBy = users.userId";
+			String sql = "select notifications.notificationId,notifications.title,notifications.description,notifications.publishedBy,notifications.publishedDate,"
+			+ "notifications.audienceId,notifications.fileId,notifications.isAproved,users.name from notifications inner join users on notifications.publishedBy = users.userId";
 			System.out.println(sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
-				NewsObjects news = new NewsObjects();
-				news.setNewsId(rs.getInt("newsId"));
+				NotificationObjects news = new NotificationObjects();
+				news.setNotificationId(rs.getInt("notificationId"));
 				news.setTitle(rs.getString("title"));
 				news.setDescription(rs.getString("description"));
 				news.setPublishedBy(rs.getInt("publishedBy"));
@@ -48,13 +48,12 @@ public class NewsHandler {
 		}
 	}
 	
-	public boolean saveNews(NewsObjects newsObjects,Connection connection) throws Exception
+	public boolean saveNotifications(NotificationObjects notificationObjects,Connection connection) throws Exception
 	{
-		//{"email":"tester123@gmail.com","name":"myName","password":"qwerty","mobileNum":"9896888778","year":"4","department":"CS","uniqueId":"3434","classOrSRoom":"CS_B","isActive":0,"isTeacher":0,"isEmailVerified":0}
 		
 		try
 		{	
-			String sql = insertStmnt +"("+newsObjects.convertToString()+")";
+			String sql = insertStmnt +"("+notificationObjects.convertToString()+")";
 			System.out.println("sql "+sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.executeUpdate();			

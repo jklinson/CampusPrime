@@ -22,10 +22,12 @@ import com.google.gson.JsonObject;
 import factory.JsonFactory;
 import managers.FileManager;
 import managers.NewsManager;
+import managers.NotificationManager;
 import managers.UserManager;
 import managers.WriteUpManager;
 import models.FileObjects;
 import models.NewsObjects;
+import models.NotificationObjects;
 import models.UsersObjects;
 import models.WriteUpObjects;
 
@@ -109,18 +111,6 @@ public class CampusPrimeService {
 		}
 		return response.toString();
 	}
-/*	@GET
-    @Path("/download/image")
-    @Produces({"image/png", "image/jpg", "image/gif"})
-    public Response downloadImageFile() {
- 
-        // set file (and path) to be download
-        File file = new File("D:/Linson/WorkSpace/WebApps/FileUpload/17.jpg");
- 
-        ResponseBuilder responseBuilder = Response.ok((Object) file);
-        responseBuilder.header("Content-Disposition", "attachment; filename=\"MyPngImageFile.png\"");
-        return responseBuilder.build();
-    }*/
 	@GET
     @Path("/download/{fileId}")
     public Response downloadFile(@PathParam("fileId") int fileId) {
@@ -207,7 +197,25 @@ public class CampusPrimeService {
 		}
 		return writeUpDetails;
 	}
-	
+	@GET
+	@Path("/GetNotifications")
+	@Produces("application/json")
+	public String Notifications()
+	{
+		String notificationDetails  = null;
+		try 
+		{
+			ArrayList<NotificationObjects> notificationData = null;
+			NotificationManager notificationManager= new NotificationManager();
+			notificationData = notificationManager.GetNotifications();
+			notificationDetails = JsonFactory.createNotificationArray(notificationData);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in Notifications "+ e);
+		}
+		return notificationDetails;
+	}
 	@Path("/saveNews")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -247,6 +255,32 @@ public class CampusPrimeService {
 			if(status){
 				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
 				response.addProperty(Constants.MESSAGE_KEY, "Your write up have been uploaded to CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in saveNews "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	
+	@Path("/saveNotifications")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String saveNotifications(final String notificationDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			NotificationManager notificationManager= new NotificationManager();
+			boolean status = notificationManager.saveNotifications(notificationDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your notification have been uploaded to CampusPrime.");
 			}
 			System.out.println(response);
 
