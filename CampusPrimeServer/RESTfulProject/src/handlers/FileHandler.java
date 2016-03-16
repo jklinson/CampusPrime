@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import com.mysql.jdbc.Statement;
 
 import models.FileObjects;
+import utility.Constants;
 
 public class FileHandler {
 
@@ -48,7 +49,7 @@ public class FileHandler {
 	public FileObjects getFileWithId(int fileId, Connection connection) throws SQLException{
 		
 		FileObjects fileObject = new FileObjects();
-		fileObject.setFilePath("/d/Linson/WorkSpace/WebApps/FileUpload/noImage.png");
+		fileObject.setFilePath(Constants.FILE_UPLOAP_PATH+"noImage.png");
 		String sql = "SELECT filePath, fileName, fileType from "+tableName+" where fileId = "+fileId;
 		System.out.println("sql "+sql);
 		PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
