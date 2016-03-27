@@ -8,36 +8,12 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('CalendarCtrl', function($scope, $rootScope, $location, moment) {
+	.controller('CalendarCtrl', function($scope, $rootScope, $location, moment, UserService, $http, AlertService) {
 
 		$rootScope.currentPage = 'Calendar';
 		$scope.calendarView = 'month';
 	    $scope.viewDate = new Date();
-	    $scope.events = [
-	      {
-	        title: 'An event',
-	        type: 'warning',
-	        startsAt: moment().startOf('week').subtract(2, 'days').add(8, 'hours').toDate(),
-	        endsAt: moment().startOf('week').add(1, 'week').add(9, 'hours').toDate(),
-	        draggable: true,
-	        resizable: true
-	      }, {
-	        title: '<i class="glyphicon glyphicon-asterisk"></i> <span class="text-primary">Another event</span>, with a <i>html</i> title',
-	        type: 'info',
-	        startsAt: moment().subtract(1, 'day').toDate(),
-	        endsAt: moment().add(5, 'days').toDate(),
-	        draggable: true,
-	        resizable: true
-	      }, {
-	        title: 'This is a really long event title that occurs on every year',
-	        type: 'important',
-	        startsAt: moment().startOf('day').add(7, 'hours').toDate(),
-	        endsAt: moment().startOf('day').add(19, 'hours').toDate(),
-	        recursOn: 'year',
-	        draggable: true,
-	        resizable: true
-	      }
-	    ];
+	    $scope.events = [];
 
 	    $scope.isCellOpen = true;
 
@@ -56,4 +32,91 @@ angular.module('campusPrime')
 	    $scope.eventTimesChanged = function(event) {
 	      alert('Dropped or resized', event);
 	    };
+
+	    $scope.toggle = function($event, field, event) {
+	      $event.preventDefault();
+	      $event.stopPropagation();
+	      event[field] = !event[field];
+	    };
+
+
+        $scope.fetchCalendarEvents = function() {
+
+            $http({
+              method: 'GET',
+              url: 'http://localhost:8080/RESTfulProject/REST/WebService/GetCalendarEvents'
+
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                console.log('In successCallback '+JSON.stringify(response));
+                if (response.data.status === Constants.success ) {
+                    $scope.events = JSON.parse(response.data.calendarEvents);
+                    console.log($scope.events);
+                    angular.forEach($scope.events, function(value, key) {
+					  value.startsAt = new Date(parseInt(value.startsAt));
+					  value.endsAt = new Date(parseInt(value.endsAt));
+					  value.editable = false;
+					  value.deletable = false;
+					});
+                };
+                
+              }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.log('In errorCallback '+JSON.stringify(response));
+                AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+              });
+            
+        }
+
+
+        $scope.saveCalendarEvents    = function(fileId){
+
+            $scope.event.audienceId 	= 1;
+            $scope.event.isApproved 	= 1;
+            $scope.event.publishedBy 	= UserService.getUserId();
+            $scope.event.publishedDate 	= new Date().getTime();
+            $scope.event.startsAt   	= $scope.event.startsAt.getTime();
+            $scope.event.endsAt   		= $scope.event.endsAt.getTime();
+            console.log($scope.event);
+            $http({
+              method: 'POST',
+              url: 'http://localhost:8080/RESTfulProject/REST/WebService/saveCalendarEvents',
+              data: $scope.event
+
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                console.log('In successCallback '+JSON.stringify(response));
+                if (response.data.status === Constants.success ) {
+                    
+                    AlertService.showAlert("Upload success!", response.data.message);
+                    $scope.fetchCalendarEvents();
+                }
+                else{
+                    AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+                }
+                $('#calendarPopup').modal('hide');
+                $scope.event = {};
+                
+              }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $scope.event = {};
+                $('#calendarPopup').modal('hide');
+                AlertService.showAlert("Upload Failed!", response.data.message);
+                console.log('In errorCallback '+JSON.stringify(response));
+                
+              });
+
+        }
+
+        $scope.fetchCalendarEvents();
+
+        $scope.getFormatedDate      = function(newsDate){
+            var date = new Date(parseInt(newsDate));
+            return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
+        }
+
 	});
