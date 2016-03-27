@@ -31,7 +31,7 @@ angular.module('campusPrime')
 			    	console.log('UserService '+ UserService.getUserId());
 			    	$location.path('/dashboard');
 			    }else{
-			    	AlertService.showAlert("Login Failed!", response.data.Message);
+			    	AlertService.showAlert("Login Failed!", response.data.message);
 			    }
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs

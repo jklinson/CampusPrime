@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('RegisterCtrl', function($scope, $location, $http) {
+	.controller('RegisterCtrl', function($scope, $location, $http, AlertService) {
 
 		$scope.selectedRole = 'Student';
 
@@ -31,9 +31,10 @@ angular.module('campusPrime')
 			    // when the response is available
 			    console.log('In successCallback '+JSON.stringify(response));
 			    if(response.data.status === Constants.success){
+			    	AlertService.showAlert("Campus Prime", response.data.message);
 			    	$location.path('/login');
 			    }else{
-			    	alert(response.data.Message);
+			    	AlertService.showAlert("Campus Prime", response.data.message);
 			    }
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs

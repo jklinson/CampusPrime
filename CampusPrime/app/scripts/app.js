@@ -13,6 +13,7 @@ angular
     'ui.router',
     'ngAnimate',
     'ngCookies',
+    'mwl.calendar',
     'ui.bootstrap'
   ])
   .config(function($stateProvider, $urlRouterProvider) {

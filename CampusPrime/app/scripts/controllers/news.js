@@ -101,7 +101,6 @@ angular.module('campusPrime')
 
         $scope.getFormatedDate      = function(newsDate){
             var date = new Date(parseInt(newsDate));
-            console.log(date);
             return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
         }
 
