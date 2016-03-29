@@ -11,9 +11,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import connector.Database;
+import factory.JsonFactory;
 import handlers.UserHandler;
 import models.UsersObjects;
 import utility.Constants;
+import utility.SendEmail;
 
 /**
  * @author Linson Alfred
@@ -35,9 +37,33 @@ public class UserManager {
 		}
 		return userDetails;
 	}
-	
-	public boolean registerUser(String userDetails)throws Exception {
-		boolean response=false;
+	public UsersObjects GetUserByMail(String mailId)throws Exception {
+		UsersObjects userDetails = null;
+		try {
+			    Database database= new Database();
+			    Connection connection = database.Get_Connection();
+				UserHandler user= new UserHandler();
+				userDetails=user.GetUserByEmail(connection, mailId);
+				
+		} catch (Exception e) {
+			throw e;
+		}
+		return userDetails;
+	}
+	public void verifyEmail(int userId)throws Exception {
+		UsersObjects userDetails = null;
+		try {
+			    Database database= new Database();
+			    Connection connection = database.Get_Connection();
+				UserHandler user= new UserHandler();
+				user.verifyEmail(connection, userId);
+				
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	public UsersObjects registerUser(String userDetails)throws Exception {
+		UsersObjects respoUser;
 		try {
 			    Database database= new Database();
 			    Connection connection = database.Get_Connection();
@@ -47,13 +73,17 @@ public class UserManager {
 				System.out.println("2. "+jsonObject.toString());
 				UsersObjects user= new UsersObjects(jsonObject);
 				UserHandler handler= new UserHandler();
-				response=handler.register(user, connection);
+				respoUser=handler.register(user, connection);
+				respoUser = GetUserByMail(respoUser.getEmail());
+				SendEmail.sendEmail(respoUser);
+				
 				
 		} catch (Exception e) {
 			throw e;
 		}
-		return response;
+		return respoUser;
 	}
+	
 
 	public JsonObject checkLogin(String userDetails)throws Exception{
 		JsonObject response = new JsonObject();
@@ -70,9 +100,7 @@ public class UserManager {
 				existingUser=handler.checkLogin(user, connection);
 				if(existingUser !=null){
 					if(user.getPassword().equals(existingUser.getPassword())){
-						response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
-						response.addProperty(Constants.MESSAGE_KEY, "Succesfully loged in.");
-						response.add("user", new Gson().toJsonTree(existingUser));
+						response = JsonFactory.createLoginResponse(existingUser);
 					}
 					else{
 						response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);

@@ -50,7 +50,42 @@ public class UserHandler {
 		}
 	}
 	
-	public boolean register(UsersObjects usersObjects,Connection connection) throws Exception
+	public UsersObjects GetUserByEmail(Connection connection, String mailId) throws Exception
+	{
+		UsersObjects user = new UsersObjects();
+		try
+		{			
+			String sql = "SELECT "+coloumnNames+" FROM "+tableName+" where email = '"+mailId+"'";
+			System.out.println(sql);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			
+			//ps.setString(1,uname);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				
+				user.setUserId(rs.getInt("userId"));
+				user.setEmail(rs.getString("email"));
+				user.setName(rs.getString("name"));
+				user.setMobileNum(rs.getLong("mobileNum"));
+				user.setYear(rs.getString("year"));
+				user.setDepartment(rs.getString("department"));
+				user.setUniqueId(rs.getString("uniqueId"));
+				user.setClassOrSRoom(rs.getString("classOrSRoom"));
+				user.setActive(rs.getBoolean("isActive"));
+				user.setTeacher(rs.getBoolean("isTeacher"));
+				user.setEmailVerified(rs.getBoolean("isEmailVerified"));
+				System.out.println("isEmailVerified " +rs.getBoolean("isEmailVerified"));
+			}
+			return user;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+	}
+	
+	public UsersObjects register(UsersObjects usersObjects,Connection connection) throws Exception
 	{
 		//{"email":"tester123@gmail.com","name":"myName","password":"qwerty","mobileNum":"9896888778","year":"4","department":"CS","uniqueId":"3434","classOrSRoom":"CS_B","isActive":0,"isTeacher":0,"isEmailVerified":0}
 		
@@ -60,7 +95,24 @@ public class UserHandler {
 			System.out.println("sql "+sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.executeUpdate();			
-			return true;
+			return usersObjects;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
+	}
+	public void verifyEmail(Connection connection, int userId) throws Exception
+	{
+		//{"email":"tester123@gmail.com","name":"myName","password":"qwerty","mobileNum":"9896888778","year":"4","department":"CS","uniqueId":"3434","classOrSRoom":"CS_B","isActive":0,"isTeacher":0,"isEmailVerified":0}
+		
+		try
+		{	
+			String sql = "update "+tableName+" set isEmailVerified = 1 where userId = "+userId;
+			System.out.println("sql "+sql);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.executeUpdate();			
 		}
 		catch(Exception e)
 		{
@@ -91,7 +143,8 @@ public class UserHandler {
 				user.setClassOrSRoom(rs.getString("classOrSRoom"));
 				user.setActive(rs.getBoolean("isActive"));
 				user.setTeacher(rs.getBoolean("isTeacher"));
-				user.setEmailVerified(rs.getBoolean("isTeacher"));
+				user.setEmailVerified(rs.getBoolean("isEmailVerified"));
+				System.out.println("isEmailVerified " +rs.getBoolean("isEmailVerified"));
 			}
 			return user;
 		}

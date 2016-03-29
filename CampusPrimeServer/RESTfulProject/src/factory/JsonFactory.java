@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import models.CalendarObject;
 import models.NewsObjects;
 import models.NotificationObjects;
+import models.UsersObjects;
 import models.WriteUpObjects;
 import utility.Constants;
 
@@ -51,6 +53,15 @@ public class JsonFactory {
 		return json.toString();
 		
 	}
+	public static String createCalendarEventsArray(ArrayList<CalendarObject> calendarData){
+			
+		JsonObject json = new JsonObject();
+		createSuccesseJson(json, "SuccesFully retrieved the calendar details.");
+		Gson gson = new Gson();
+		json.addProperty("calendarEvents", gson.toJson(calendarData));
+		return json.toString();
+		
+	}
 	public static String createNotificationArray(ArrayList<NotificationObjects> notificationData){
 		
 		JsonObject json = new JsonObject();
@@ -58,6 +69,22 @@ public class JsonFactory {
 		Gson gson = new Gson();
 		json.addProperty("notifications", gson.toJson(notificationData));
 		return json.toString();
+		
+	}
+	public static JsonObject createLoginResponse(UsersObjects usersObject){
+			
+		JsonObject json = new JsonObject();
+		System.out.println("user email verified value "+ usersObject.isEmailVerified());
+		if(usersObject.isEmailVerified()){
+			System.out.println("user email verified value inside if loop "+ usersObject.isEmailVerified());
+			createSuccesseJson(json, "Succesfully loged in.");
+		}
+		else{
+			System.out.println("user email verified value inside if loop "+ usersObject.isEmailVerified());
+			createFailureJson(json, "Your email is not verified, please verify your email.");
+		}		
+		json.add("user", new Gson().toJsonTree(usersObject));
+		return json;
 		
 	}
 	

@@ -15,16 +15,19 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import utility.Constants;
+import utility.SendEmail;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import factory.JsonFactory;
+import managers.CalendarManager;
 import managers.FileManager;
 import managers.NewsManager;
 import managers.NotificationManager;
 import managers.UserManager;
 import managers.WriteUpManager;
+import models.CalendarObject;
 import models.FileObjects;
 import models.NewsObjects;
 import models.NotificationObjects;
@@ -72,11 +75,10 @@ public class CampusPrimeService {
 		try 
 		{
 			UserManager userManager= new UserManager();
-			boolean status = userManager.registerUser(userDetails);
-			if(status){
-				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
-				response.addProperty(Constants.MESSAGE_KEY, "Succesfully registered. Please wait for the approval from admin.");
-			}
+			UsersObjects usersObjects = userManager.registerUser(userDetails);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+			response.addProperty(Constants.MESSAGE_KEY, "Succesfully registered. Please wait for the approval from admin.");
+			response.addProperty("activateLink", Constants.MAIL_LINK+usersObjects.getUserId());
 			System.out.println(response);
 
 		} catch (Exception e)
@@ -110,6 +112,25 @@ public class CampusPrimeService {
 			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
 		}
 		return response.toString();
+	}
+	@Path("/verifyEmail/{userId}")
+	public String verifyEmail(@PathParam("userId") int userId)
+	{
+		System.out.println("activate 1. "+userId);
+		String response = "Succesfully verified the email of the user. You can continue with the using of Campus Prime.";
+		try 
+		{
+			UserManager userManager= new UserManager();
+			userManager.verifyEmail(userId);
+			
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in Users "+ e);
+			response = "Unable to verify the user email address.";
+		}
+		return response;
 	}
 	@GET
     @Path("/download/{fileId}")
@@ -216,6 +237,25 @@ public class CampusPrimeService {
 		}
 		return notificationDetails;
 	}
+	@GET
+	@Path("/GetCalendarEvents")
+	@Produces("application/json")
+	public String GetCalendarEvents()
+	{
+		String calendarDetails  = null;
+		try 
+		{
+			ArrayList<CalendarObject> calendarData = null;
+			CalendarManager calendarManager= new CalendarManager();
+			calendarData = calendarManager.GetCalendarEvents();
+			calendarDetails = JsonFactory.createCalendarEventsArray(calendarData);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in News "+ e);
+		}
+		return calendarDetails;
+	}
 	@Path("/saveNews")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -287,6 +327,31 @@ public class CampusPrimeService {
 		} catch (Exception e)
 		{
 			System.out.println("error in saveNews "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	@Path("/saveCalendarEvents")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String saveCalendarEvents(final String calendarDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			CalendarManager calendarMgr= new CalendarManager();
+			boolean status = calendarMgr.saveNews(calendarDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your event have been saved to CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in save calendar events "+ e);
 			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
 			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
 		}
