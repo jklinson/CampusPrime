@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import models.AudienceObject;
 import models.CalendarObject;
 import models.NewsObjects;
 import models.NotificationObjects;
@@ -87,6 +88,12 @@ public class JsonFactory {
 		return json;
 		
 	}
-	
+	public static JsonObject createYearClassObj(ArrayList<AudienceObject> audienceList){
+		JsonObject json = new JsonObject();
+		createSuccesseJson(json, "SuccesFully retrieved the yead and classes list");
+		Gson gson = new Gson();
+		json.addProperty("yearClassList", gson.toJson(audienceList));
+		return json;
+	}
 
 }

@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import factory.JsonFactory;
+import managers.AudienceManager;
 import managers.CalendarManager;
 import managers.FileManager;
 import managers.NewsManager;
@@ -355,6 +356,16 @@ public class CampusPrimeService {
 			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
 			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
 		}
+		return response.toString();
+	}
+	
+	@GET
+	@Path("/GetYearAndClass")
+	@Produces("application/json")
+	public String getYearAndClass()
+	{
+		AudienceManager manager = new AudienceManager();
+		JsonObject response = manager.getYearAndClass();
 		return response.toString();
 	}
 

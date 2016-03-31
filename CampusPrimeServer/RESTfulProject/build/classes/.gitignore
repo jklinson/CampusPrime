@@ -1,6 +1,5 @@
-/handlers/
-/factory/
-/managers/
-/utility/
 /models/
+/handlers/
+/managers/
+/factory/
 /webService/
