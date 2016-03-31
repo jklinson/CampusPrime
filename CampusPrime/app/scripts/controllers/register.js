@@ -45,30 +45,30 @@ angular.module('campusPrime')
 			  });
 		}
 
-		$scope.getYearAncClasses	= function() {
+		// $scope.getYearAncClasses	= function() {
 
-			$http({
-			  method: 'GET',
-			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/GetYearAndClass'
+		// 	$http({
+		// 	  method: 'GET',
+		// 	  url: 'http://localhost:8080/RESTfulProject/REST/WebService/GetYearAndClass'
 
-			}).then(function successCallback(response) {
-			    // this callback will be called asynchronously
-			    // when the response is available
-			    console.log('In successCallback '+JSON.stringify(response));
-			    if(response.data.status === Constants.success){
-			    	$scope.yearClassList = JSON.parse(response.data.yearClassList);
-			    	console.log($scope.yearClassList);
-			    	console.log(JSON.parse(response.data.yearClassList));
-			    }else{
-			    	AlertService.showAlert("Campus Prime", response.data.message + "\n Please try  again later.");
-			    }
-			  }, function errorCallback(response) {
-			    // called asynchronously if an error occurs
-			    // or server returns response with an error status.
-			    console.log('In errorCallback '+JSON.stringify(response));
-			  });
-		}
+		// 	}).then(function successCallback(response) {
+		// 	    // this callback will be called asynchronously
+		// 	    // when the response is available
+		// 	    console.log('In successCallback '+JSON.stringify(response));
+		// 	    if(response.data.status === Constants.success){
+		// 	    	$scope.yearClassList = JSON.parse(response.data.yearClassList);
+		// 	    	console.log($scope.yearClassList);
+		// 	    	console.log(JSON.parse(response.data.yearClassList));
+		// 	    }else{
+		// 	    	AlertService.showAlert("Campus Prime", response.data.message + "\n Please try  again later.");
+		// 	    }
+		// 	  }, function errorCallback(response) {
+		// 	    // called asynchronously if an error occurs
+		// 	    // or server returns response with an error status.
+		// 	    console.log('In errorCallback '+JSON.stringify(response));
+		// 	  });
+		// }
 
-		$scope.getYearAncClasses();
+		// $scope.getYearAncClasses();
 
 	});
