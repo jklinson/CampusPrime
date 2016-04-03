@@ -14,7 +14,8 @@ angular.module('campusPrime')
 		$scope.writeups = [];// write-up array object for showing the list, populate after fetching from server
 		$scope.writeUp = {}; // write-up object for mapping models in popup
 		$scope.writeupTypes = ['Literatur', 'Drawing', 'Pictures', 'Videos'];
-
+        $scope.filterTag = {'isApproved':1};
+        $scope.userId = UserService.getUserId();
 
 		$scope.fetchWriteUps = function() {
 
@@ -103,6 +104,12 @@ angular.module('campusPrime')
 
 		}
 
-		
+		$scope.getClass = function(value){
+            if(value === 'All' && $scope.filterTag.isApproved===1){
+                return 'active';
+            }
+            
+            return '';
+        }
 
 	});

@@ -1,7 +1,7 @@
 <div class="row">	
 	<div class="col-lg-9 panel panel-default">
 		<div class="panel-body h-scroll">
-			<div ng-repeat="data in writeups"class="media">
+			<div ng-repeat="data in writeups |filter:filterTag"class="media">
 		  		<div class="media-left">
 		    		<a href="#">
 		      			<img class="media-object" width="80px" ng-src={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+data.fileId}} alt="Image not found">
@@ -22,13 +22,20 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="list-group">
-				  <a href="#" class="list-group-item active">All Writeups</a>
-				  <a href="#" class="list-group-item">Literatur</a>
-				  <a href="#" class="list-group-item">Drawing</a>
-				  <a href="#" class="list-group-item">Pics</a>
-				  <a href="#" class="list-group-item">Videos</a>
-				  <a href="#" class="list-group-item">My Writeups</a>
-				  <a href="#" class="list-group-item">Pending</a>
+				  <a href="" ng-click="filterTag = {'isApproved':1}" class="list-group-item active"
+                  ng-class="filterTag.isApproved ==1? 'active':''">All Writeups</a>
+				  <a href="" ng-click="filterTag = {'type':'Literatur'}" class="list-group-item"
+                  ng-class="filterTag.type == 'Literatur'? 'active':''">Literatur</a>
+				  <a href="" ng-click="filterTag = {'type':'Drawing'}" class="list-group-item"
+                  ng-class="filterTag.type == 'Drawing'? 'active':''">Drawing</a>
+				  <a href="" ng-click="filterTag = {'type':'Pictures'}" class="list-group-item"
+                  ng-class="filterTag.type == 'Pictures'? 'active':''">Pics</a>
+				  <a href="" ng-click="filterTag = {'type':'Videos'}" class="list-group-item"
+                  ng-class="filterTag.type == 'Videos'? 'active':''">Videos</a>
+				  <a href="" ng-click="filterTag = {'publishedBy':userId}" class="list-group-item"
+                  ng-class="filterTag.publishedBy === userId? 'active':''">My Writeups</a>
+				  <a href="" ng-click="filterTag = {'isApproved':0}" class="list-group-item"
+                  ng-class="filterTag.isApproved ==0? 'active':''">Pending</a>
 				</div>
 			</div>
 		</div>

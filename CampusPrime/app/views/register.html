@@ -21,10 +21,10 @@
 		    		</div>
 		    		<div class ="col-xs-6">
 		    			<label class="col-xs-3">Class No:</label>
-		    			<input type="text" class="col-xs-8" ng-model="user.classOrSRoom"  placeholder="Enter Class No">
-		    			<!-- <select class="form-control" ng-model="user.classOrSRoom">
-      						<option ng-repeat="option.classNum in yearClassList" value="{{option.classNum}}">{{option.classNum}}</option>
-    					</select> -->
+		    			<!--<input type="text" class="col-xs-8" ng-model="user.classOrSRoom"  placeholder="Enter Class No">-->
+		    			 <select class="col-xs-8" ng-model="user.classOrSRoom">
+      						<option ng-repeat="option in yearClassList | filter:{year:user.year}" value="{{option.classNum}}">{{option.classNum}}</option>
+    					</select> 
 		    		</div>
 		    	</div>
 		    	<div class ="col-xs-12 top20">
@@ -60,11 +60,11 @@
 		    	<div class ="col-xs-12 top20">
 		    		<div class ="col-xs-6">
 		    			<label class="col-xs-3">Year:</label>
-		    			<input type="text" class="col-xs-8" ng-model="user.year"  placeholder="Enter year">
-		    			<!--<select class="form-control" ng-model="user.year">
-      						<option ng-repeat="option in yearClassList | unique:'option.year'" value="{{option.year}}">{{option.year}}
+		    			<!--<input type="text" class="col-xs-8" ng-model="user.year"  placeholder="Enter year">-->
+		    			<select class="col-xs-8" ng-model="user.year">
+      						<option ng-repeat="option in yearClassList | unique:'year'" value="{{option.year}}">{{getDisplayYear(option.year)}} 
       						</option>
-    					</select>-->
+    					</select>
 		    		</div>		    		
 		    	</div>
 		    </div>

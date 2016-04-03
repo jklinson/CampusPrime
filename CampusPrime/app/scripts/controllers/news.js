@@ -8,12 +8,12 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-    .controller('NewsCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService) {
+    .controller('NewsCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService, $filter) {
 
         $rootScope.currentPage = 'News';
         $scope.myInterval = 5000;
         $scope.newses = [];
-
+        $scope.newsFilterTag = {'isApproved' :1};
         $scope.fetchNews = function() {
 
             $http({
@@ -103,7 +103,56 @@ angular.module('campusPrime')
             var date = new Date(parseInt(newsDate));
             return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
         }
-
+        
+        $scope.getDisplayYear = function(year) {
+            return UserService.getUserBatch();
+        }
+        
+        $scope.fetchNewsByUser = function(){
+            $scope.newsFilterTag = {'publishedBy' : UserService.getUserId()};
+            console.log($scope.newsFilterTag);
+            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
+        }
+        $scope.fetchAllNewses = function(){
+            $scope.newsFilterTag = {'isApproved' :1};
+            console.log($scope.newsFilterTag);
+            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
+        }
+        $scope.fetchPending = function(){
+            $scope.newsFilterTag = {'isApproved' :0};
+            console.log($scope.newsFilterTag);
+            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
+        }
+        $scope.fetchBatchNewses = function(){
+            $scope.newsFilterTag = {'year' :UserService.getUserYear()};
+            console.log($scope.newsFilterTag);
+            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
+        }
+        $scope.fetchClassNews = function(){
+            $scope.newsFilterTag = {'year' :UserService.getUserYear(), classNum : UserService.getUserClass()};
+            console.log($scope.newsFilterTag);
+            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
+        }
+        
+        $scope.getClass = function(value){
+            if(value === 'all' && $scope.newsFilterTag.isApproved===1){
+                return 'active';
+            }
+            else if(value === 'mine' && $scope.newsFilterTag.publishedBy ){
+                return 'active';
+            }
+            else if(value === 'class' && $scope.newsFilterTag.classNum && $scope.newsFilterTag.year){
+                return 'active';
+            }
+            else if(value === 'year' && $scope.newsFilterTag.year && !$scope.newsFilterTag.classNum){
+                return 'active';
+            }
+            else if(value === 'pending' && ($scope.newsFilterTag.isApproved ===0) ){
+                return 'active';
+            }
+            
+            return '';
+        }
         $scope.fetchNews();
 
     });

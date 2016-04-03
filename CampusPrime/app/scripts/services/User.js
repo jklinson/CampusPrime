@@ -14,5 +14,17 @@ angular.module('campusPrime').service('UserService', function($rootScope){
 
    	  return user.userId;
    }
+   this.getUserBatch = function() {
+
+   	  return user.year +' - '+ (parseInt(user.year)+4);
+   }
+   this.getUserYear = function() {
+
+   	  return user.year;
+   }
+   this.getUserClass = function() {
+
+   	  return user.classOrSRoom;
+   }
 
 });

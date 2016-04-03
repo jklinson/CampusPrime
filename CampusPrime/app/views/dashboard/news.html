@@ -8,7 +8,7 @@
 		<div class="row"> 	
 			<div class="jumbotron">
 				<uib-carousel interval="myInterval" no-wrap="noWrapSlides">
-			      <uib-slide ng-repeat="eachNews in newses" active="eachNews.active" index="eachNews.id">
+			      <uib-slide ng-repeat="eachNews in newses |filter:newsFilterTag" active="eachNews.active" index="eachNews.id">
 			        <div class="row">
 							<div class="col-xs-12">
 								<span class="col-xs-6 text-left " ng-bind="getFormatedDate(eachNews.publishedDate)"></span>
@@ -41,12 +41,16 @@
 		<div class="jumbotron">
 			<div class="row">
 				<div class="list-group">
-				  <a href="#" class="list-group-item active">All News</a>
-				  <a href="#" class="list-group-item">Class</a>
-				  <a href="#" class="list-group-item">Department</a>
-				  <a href="#" class="list-group-item">Year</a>
-				  <a href="#" class="list-group-item">My News</a>
-				  <a href="#" class="list-group-item">Pending</a>
+				  <a href="" class="list-group-item" ng-class="getClass('all')" 
+                  ng-click="fetchAllNewses()">All News</a>
+				  <a href="" class="list-group-item" ng-class="getClass('class')" 
+                  ng-click="fetchClassNews()">Class</a>
+				  <a href="" class="list-group-item" ng-class="getClass('year')" 
+                  ng-click="fetchBatchNewses()">{{getDisplayYear()}}</a>
+				  <a href=""  class="list-group-item" ng-class="getClass('mine')"
+                  ng-click="fetchNewsByUser()">My News</a>
+				  <a href="" class="list-group-item" ng-class="getClass('pending')"
+                  ng-click="fetchPending()">Pending</a>
 				</div>				
 			</div>
 		</div>
