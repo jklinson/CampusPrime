@@ -44,4 +44,42 @@ public class WriteUpManager {
 		}
 		return response;
 	}
+	
+	public boolean updateWriteUps(String writeUpDetails)throws Exception {
+		boolean response=false;
+		try {
+			    Database database= new Database();
+			    Connection connection = database.Get_Connection();
+				JsonParser parser = new JsonParser();
+				JsonObject jsonObject = new JsonObject();
+				jsonObject = (JsonObject)parser.parse(writeUpDetails);
+				System.out.println("2. "+jsonObject.toString());
+				WriteUpObjects writeUp = new WriteUpObjects(jsonObject);
+				WriteUpHandler handler= new WriteUpHandler();
+				response=handler.updateWriteUps(writeUp, connection);
+				
+		} catch (Exception e) {
+			throw e;
+		}
+		return response;
+	}
+	
+	public boolean deleteWriteUps(String writeUpDetails)throws Exception {
+		boolean response=false;
+		try {
+			    Database database= new Database();
+			    Connection connection = database.Get_Connection();
+				JsonParser parser = new JsonParser();
+				JsonObject jsonObject = new JsonObject();
+				jsonObject = (JsonObject)parser.parse(writeUpDetails);
+				System.out.println("2. "+jsonObject.toString());
+				WriteUpObjects writeUp = new WriteUpObjects(jsonObject);
+				WriteUpHandler handler= new WriteUpHandler();
+				response=handler.deleteWriteUps(writeUp, connection);
+				
+		} catch (Exception e) {
+			throw e;
+		}
+		return response;
+	}
 }

@@ -21,6 +21,7 @@ public class WriteUpObjects {
 
 	public WriteUpObjects(JsonObject json) {
 		
+		this.setWriteUpId(json.has("writeUpId")? json.get("writeUpId").getAsInt():-1);
 		this.setTitle(json.has("title")? json.get("title").getAsString():"");
 		this.setDescription(json.has("description")? json.get("description").getAsString():"");
 		this.setPublishedBy(json.has("publishedBy")? json.get("publishedBy").getAsInt():-1);

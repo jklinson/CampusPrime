@@ -14,6 +14,9 @@ angular.module('campusPrime')
         $scope.myInterval = 5000;
         $scope.newses = [];
         $scope.newsFilterTag = {'isApproved' :1};
+        $scope.editingItem = {};
+        $scope.isEditing = false;
+        
         $scope.fetchNews = function() {
 
             $http({
@@ -52,7 +55,10 @@ angular.module('campusPrime')
                 console.log('In successCallback '+JSON.stringify(response));
                 if (response.data.status === Constants.success ) {
                     $scope.saveNews(response.data.fileId);
-                };
+                }else{
+                    AlertService.showAlert("Upload Failed!", response.data.message);
+                    $('#newsPopup').modal('hide');
+                }
                 
               }, function errorCallback(response) {
                 // called asynchronously if an error occurs
@@ -80,7 +86,7 @@ angular.module('campusPrime')
                 // when the response is available
                 console.log('In successCallback '+JSON.stringify(response));
                 if (response.data.status === Constants.success ) {
-                    $('#newsPopup').modal('hide') 
+                    $('#newsPopup').modal('hide'); 
                     AlertService.showAlert("Upload success!", "Succesfully uploaded the news");
                     $scope.fetchNews();
                 }
@@ -154,5 +160,83 @@ angular.module('campusPrime')
             return '';
         }
         $scope.fetchNews();
+        
+        $scope.deleteNews		= function(deleteItem){
+			
+			console.log(deleteItem);
+			$http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/deleteNews',
+			  data: deleteItem
+
+			}).then(function successCallback(response) {
+			    console.log('In successCallback '+JSON.stringify(response));
+			    if (response.data.status === Constants.success ) {
+			    	AlertService.showAlert("Campus Prime!", "Succesfully deleted the news");
+			    	$scope.fetchNews();
+			    }
+			    else{
+			    	AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+			    }
+			    
+			  }, function errorCallback(response) {
+			    console.log('In errorCallback '+JSON.stringify(response));
+			    
+			  });
+
+		}
+        
+        $scope.editNews          = function(){
+            $http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/updateNews',
+			  data: $scope.news
+
+			}).then(function successCallback(response) {
+			    console.log('In successCallback '+JSON.stringify(response));
+			    if (response.data.status === Constants.success ) {
+			    	$('#newsPopup').modal('hide') 
+			    	AlertService.showAlert("Campus Prime!", "Succesfully updated the news");
+			    	$scope.fetchNews();
+			    }
+			    else{
+			    	AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+			    }
+			    
+			  }, function errorCallback(response) {
+			    console.log('In errorCallback '+JSON.stringify(response));
+			    
+			  });
+        }
+        $scope.updateNews		= function(updateItem){
+			
+            $scope.news = angular.copy(updateItem);
+            $scope.editingItem = angular.copy(updateItem);
+            $scope.isEditing = true;
+			console.log(updateItem);
+            
+            $('#newsPopup').modal('show');
+			
+
+		}
+        
+        $('#newsPopup').on('hidden.bs.modal', function (e) {
+            console.log('hidden event called');
+            if($scope.isEditing){
+                $scope.news = {};
+                $scope.editingItem = {};
+                $scope.isEditing = false;                
+            }
+            $scope.news.file = {};
+            $scope.$apply();            
+        });
+        
+        
+        $scope.doDisplay = function(item){
+            if(item.publishedBy === UserService.getUserId()){
+                return true;
+            }
+            return false;
+        }
 
     });

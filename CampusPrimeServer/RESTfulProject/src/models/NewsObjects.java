@@ -13,9 +13,11 @@ public class NewsObjects {
 	private int audienceId;
 	private int fileId;
 	private int isApproved;
+	private String year;
+	private String classNum;
 	
 	public NewsObjects(JsonObject json) {
-		
+			
 		this.setNewsId(json.has("newsId")? json.get("newsId").getAsInt():-1);
 		this.setTitle(json.has("title")? json.get("title").getAsString():"");
 		this.setDescription(json.has("description")? json.get("description").getAsString():"");
@@ -25,6 +27,18 @@ public class NewsObjects {
 		this.setFileId(json.has("fileId")? json.get("fileId").getAsInt():-1);
 		this.setIsApproved(json.has("isApproved")? json.get("isApproved").getAsInt():-1);
 		
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getClassNum() {
+		return classNum;
+	}
+	public void setClassNum(String classNum) {
+		this.classNum = classNum;
 	}
 	public NewsObjects() {
 	}

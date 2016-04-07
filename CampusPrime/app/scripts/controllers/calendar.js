@@ -14,6 +14,8 @@ angular.module('campusPrime')
 		$scope.calendarView = 'month';
 	    $scope.viewDate = new Date();
 	    $scope.events = [];
+        $scope.editingItem = {};
+        $scope.isEditing = false;
 
 	    $scope.isCellOpen = true;
 
@@ -22,11 +24,19 @@ angular.module('campusPrime')
 	    };
 
 	    $scope.eventEdited = function(event) {
-	      alert('Edited', event);
+	      //alert('Edited', event);
+          console.log(event);
+           $scope.event = angular.copy(event);
+            $scope.editingItem = angular.copy(event);
+            $scope.isEditing = true;
+            
+            $('#calendarPopup').modal('show');
 	    };
 
 	    $scope.eventDeleted = function(event) {
-	      alert('Deleted', event);
+	      //alert('Deleted', event);
+          console.log(event);
+          $scope.deleteCalendarEvents(event);
 	    };
 
 	    $scope.eventTimesChanged = function(event) {
@@ -56,8 +66,8 @@ angular.module('campusPrime')
                     angular.forEach($scope.events, function(value, key) {
 					  value.startsAt = new Date(parseInt(value.startsAt));
 					  value.endsAt = new Date(parseInt(value.endsAt));
-					  value.editable = false;
-					  value.deletable = false;
+					  value.editable = UserService.getUserId() === value.publishedBy ? true: false;
+					  value.deletable = UserService.getUserId() === value.publishedBy ? true: false;
 					});
                 };
                 
@@ -118,5 +128,69 @@ angular.module('campusPrime')
             var date = new Date(parseInt(newsDate));
             return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
         }
+        
+         $scope.deleteCalendarEvents		= function(deleteItem){
+			
+			console.log(deleteItem);
+			$http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/deleteCalendarEvents',
+			  data: deleteItem
+
+			}).then(function successCallback(response) {
+			    console.log('In successCallback '+JSON.stringify(response));
+			    if (response.data.status === Constants.success ) {
+			    	AlertService.showAlert("Campus Prime!", "Succesfully deleted the event");
+			    	$scope.fetchCalendarEvents();
+			    }
+			    else{
+			    	AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+			    }
+			    
+			  }, function errorCallback(response) {
+			    console.log('In errorCallback '+JSON.stringify(response));
+			    
+			  });
+
+		}
+        
+        $scope.editCalendarEvents          = function(){
+            
+            var data = angular.copy($scope.event);
+            data.startsAt   	= data.startsAt.getTime();
+            data.endsAt   		= data.endsAt.getTime();
+            
+            $http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/updateCalendarEvents',
+			  data: data
+
+			}).then(function successCallback(response) {
+			    console.log('In successCallback '+JSON.stringify(response));
+			    if (response.data.status === Constants.success ) {
+			    	$('#calendarPopup').modal('hide') 
+			    	AlertService.showAlert("Campus Prime!", "Succesfully updated the event");
+			    	$scope.fetchCalendarEvents();
+			    }
+			    else{
+			    	AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+			    }
+			    
+			  }, function errorCallback(response) {
+			    console.log('In errorCallback '+JSON.stringify(response));
+			    
+			  });
+        }
+        
+        
+        $('#calendarPopup').on('hidden.bs.modal', function (e) {
+            console.log('hidden event called');
+            if($scope.isEditing){
+                $scope.event = {};
+                $scope.editingItem = {};
+                $scope.isEditing = false;
+                $scope.$apply();       
+            }     
+        });
 
 	});

@@ -5,9 +5,15 @@
 		      <div class="panel-body">
 		      	<p>{{eachNot.description}}</p></br>
 		      	<a ng-if="eachNot.fileId>0"ng-href={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+eachNot.fileId}}>
-		      		Clcik here to access the attachment</a></br>
-		      	<span class="pull-right">Posted by:- {{eachNot.publishedUser}}</span></br>
-		      	<span class="pull-right" >Posted date:- {{getFormatedDate(eachNot.publishedDate)}}</span>
+		      		Clcik here to access the attachment</a></br>		      	
+                  
+                <a href=""class="pull-right" ng-show="doDisplay(eachNot)"><span class="glyphicon glyphicon-pencil" 
+                ng-click="updateNotificaation(eachNot)"></span></a>
+                <a href="" class="trash pull-right" ng-click="deleteNotifications(eachNot)" ng-show="doDisplay(eachNot)">
+                    <span class="glyphicon glyphicon-trash"></span></a></br>
+                <span class="pull-right">Posted by:- {{eachNot.publishedUser}}</span></br>
+                <span class="pull-right" >Posted date:- {{getFormatedDate(eachNot.publishedDate)}}</span>                     
+                
 		      </div>
 		    </div>		    
 	</div>
@@ -38,7 +44,8 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        <button type="button" class="btn btn-primary" ng-click="uploadNotificationFile()">Upload</button>
+	        <button type="button" class="btn btn-primary" ng-show="!isEditing" ng-click="uploadNotificationFile()">Upload</button>
+            <button type="button" class="btn btn-primary" ng-show="isEditing" ng-click="editNotification()">Save</button>
 	      </div>
 	    </div>
 	  </div>

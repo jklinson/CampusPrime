@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import models.CalendarObject;
+import models.NewsObjects;
 
 public class CalendarHandler {
 
@@ -57,6 +58,43 @@ public class CalendarHandler {
 		try
 		{	
 			String sql = insertStmnt +"("+calendarObject.convertToString()+")";
+			System.out.println("sql "+sql);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.executeUpdate();			
+			return true;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
+	}
+	public boolean updateCalendarEvents(CalendarObject obj,Connection connection) throws Exception
+	{
+		
+		try
+		{	
+			String sql = "update "+tableName+" set title = '"+obj.getTitle()+"', description = '"+obj.getDescription()
+			+"', audienceId = "+obj.getAudienceId()+ ", isAproved = "+obj.getIsApproved()+ ", startsAt = '"+obj.getStartsAt()
+			+ "', endsAt = '"+obj.getEndsAt()+"', publishedDate = '"+obj.getPublishedDate()+"', publishedBy = "+obj.getPublishedBy()
+			+ " where calendarId ="+obj.getCalendarId();
+			System.out.println("sql "+sql);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.executeUpdate();			
+			return true;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
+	}
+	public boolean deleteCalendarEvents(CalendarObject obj,Connection connection) throws Exception
+	{
+		
+		try
+		{	
+			String sql = "DELETE FROM "+tableName+" WHERE calendarId ="+obj.getCalendarId();
 			System.out.println("sql "+sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.executeUpdate();			

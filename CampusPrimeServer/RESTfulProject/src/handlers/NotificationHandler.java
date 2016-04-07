@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import models.NewsObjects;
 import models.NotificationObjects;
 
 public class NotificationHandler {
@@ -54,6 +55,44 @@ public class NotificationHandler {
 		try
 		{	
 			String sql = insertStmnt +"("+notificationObjects.convertToString()+")";
+			System.out.println("sql "+sql);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.executeUpdate();			
+			return true;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
+	}
+	
+	public boolean updateNotifications(NotificationObjects obj,Connection connection) throws Exception
+	{
+		
+		try
+		{	
+			String sql = "update "+tableName+" set title = '"+obj.getTitle()+"', description = '"+obj.getDescription()
+			+"', audienceId = "+obj.getAudienceId()+ ", isAproved = "+obj.getIsApproved()
+			+ ", fileId = "+obj.getFileId()+", publishedDate = '"+obj.getPublishedDate()+"', publishedBy = "+obj.getPublishedBy()
+			+ " where notificationId ="+obj.getNotificationId();
+			System.out.println("sql "+sql);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.executeUpdate();			
+			return true;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
+	}
+	public boolean deleteNotification(NotificationObjects obj,Connection connection) throws Exception
+	{
+		
+		try
+		{	
+			String sql = "DELETE FROM "+tableName+" WHERE notificationId ="+obj.getNotificationId();
 			System.out.println("sql "+sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.executeUpdate();			

@@ -282,6 +282,56 @@ public class CampusPrimeService {
 		}
 		return response.toString();
 	}
+	@Path("/deleteNews")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteNews(final String newsDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			NewsManager mngr= new NewsManager();
+			boolean status = mngr.deleteNews(newsDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your news have been deleted from CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in saveNews "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	@Path("/updateNews")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateNews(final String newsDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			NewsManager mngr= new NewsManager();
+			boolean status = mngr.updateNews(newsDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your news have been updated to CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in saveNews "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
 	@Path("/saveWriteUps")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -296,6 +346,56 @@ public class CampusPrimeService {
 			if(status){
 				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
 				response.addProperty(Constants.MESSAGE_KEY, "Your write up have been uploaded to CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in saveNews "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	@Path("/deleteWriteUps")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteWriteUps(final String writeUpsDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			WriteUpManager writeUpManager= new WriteUpManager();
+			boolean status = writeUpManager.deleteWriteUps(writeUpsDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your write up have been deleted from CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in saveNews "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	@Path("/updateWriteUps")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateWriteUps(final String writeUpsDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			WriteUpManager writeUpManager= new WriteUpManager();
+			boolean status = writeUpManager.updateWriteUps(writeUpsDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your write up have been updated to CampusPrime.");
 			}
 			System.out.println(response);
 
@@ -327,7 +427,57 @@ public class CampusPrimeService {
 
 		} catch (Exception e)
 		{
-			System.out.println("error in saveNews "+ e);
+			System.out.println("error in saveNotifications "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	@Path("/deleteNotifications")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteNotifications(final String notificationsDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			NotificationManager manager= new NotificationManager();
+			boolean status = manager.deleteNotification(notificationsDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your notification have been deleted from CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in delete notifications "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	@Path("/updateNotifications")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateNotifications(final String notificationDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			NotificationManager manager= new NotificationManager();
+			boolean status = manager.updateNotification(notificationDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your notification have been updated to CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in update notifications "+ e);
 			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
 			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
 		}
@@ -358,7 +508,56 @@ public class CampusPrimeService {
 		}
 		return response.toString();
 	}
-	
+	@Path("/deleteCalendarEvents")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteCalendarEvents(final String eventDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			CalendarManager mngr= new CalendarManager();
+			boolean status = mngr.deleteCalendarEvents(eventDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your event have been deleted from CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in delete event "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	@Path("/updateCalendarEvents")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateCalendarEvents(final String eventDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			CalendarManager mngr= new CalendarManager();
+			boolean status = mngr.updateCalendarEvents(eventDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your event have been updated to CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in update calendar event "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
 	@GET
 	@Path("/GetYearAndClass")
 	@Produces("application/json")

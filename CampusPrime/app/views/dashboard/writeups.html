@@ -4,14 +4,20 @@
 			<div ng-repeat="data in writeups |filter:filterTag"class="media">
 		  		<div class="media-left">
 		    		<a href="#">
-		      			<img class="media-object" width="80px" ng-src={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+data.fileId}} alt="Image not found">
+		      			<img class="media-object" width="80px"  ng-src={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+data.fileId}} alt="Image not found">
 		    		</a>
 		  		</div>
 		  		<div class="media-body">
 		    		<h4 class="media-heading">{{data.title}}</h4>
 		    		<p>{{data.description}}</p>
-		    		<img  class ="pull-right" width="20px" src="images/claps.png">
-		    		<span class ="pull-right">{{data.clapCount}}</span>  
+                    <div class="pull-right action-buttons">
+                        <a href=""><span class="glyphicon glyphicon-pencil" ng-click="updateWriteUps(data)" ng-show="doDisplay(data)"></span></a>
+                        <a href="" class="trash" ng-click="deleteWriteUps(data)" ng-show="doDisplay(data)"><span class="glyphicon glyphicon-trash"></span></a>
+                        <a href=""><img  class ="pull-right" width="20px" src="images/claps.png">
+		    		     <span class ="pull-right" style="margin-right:5px">{{data.clapCount}}</span> </span></a>                        
+                    </div>
+		    		 
+                    
 				</div>
 			</div>
 		</div>
@@ -71,7 +77,8 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        <button type="button" class="btn btn-primary" ng-click="uploadWriteUp()">Upload</button>
+	        <button type="button" class="btn btn-primary" ng-show="!isEditing" ng-click="uploadWriteUp()">Upload</button>
+            <button type="button" class="btn btn-primary" ng-show="isEditing"ng-click="editWriteup()">Save</button>
 	      </div>
 	    </div>
 	  </div>

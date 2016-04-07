@@ -11,9 +11,10 @@ angular.module('campusPrime')
 	.controller('NotificationCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService) {
 
 		$rootScope.currentPage = 'Notificaitons';
-		$scope.notifications = [];// write-up array object for showing the list, populate after fetching from server
-		$scope.notification = {}; // write-up object for mapping models in popup
-
+		$scope.notifications = [];// notification array object for showing the list, populate after fetching from server
+		$scope.notification = {}; // notification object for mapping models in popup
+        $scope.editingItem = {};
+        $scope.isEditing = false;
 
 		$scope.fetchNotifications = function() {
 
@@ -104,5 +105,84 @@ angular.module('campusPrime')
 		$scope.getFormatedDate      = function(notificationDate){
             var date = new Date(parseInt(notificationDate));
             return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
+        }
+        
+        $scope.deleteNotifications		= function(deleteItem){
+			
+			console.log(deleteItem);
+			$http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/deleteNotifications',
+			  data: deleteItem
+
+			}).then(function successCallback(response) {
+			    console.log('In successCallback '+JSON.stringify(response));
+			    if (response.data.status === Constants.success ) {
+			    	AlertService.showAlert("Campus Prime!", "Succesfully deleted the notifications");
+			    	$scope.fetchNotifications();
+			    }
+			    else{
+			    	AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+			    }
+			    
+			  }, function errorCallback(response) {
+			    console.log('In errorCallback '+JSON.stringify(response));
+			    
+			  });
+
+		}
+        
+        $scope.editNotification          = function(){
+            $http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/updateNotifications',
+			  data: $scope.notification
+
+			}).then(function successCallback(response) {
+			    console.log('In successCallback '+JSON.stringify(response));
+			    if (response.data.status === Constants.success ) {
+			    	$('#notificationPopup').modal('hide') 
+			    	AlertService.showAlert("Campus Prime!", "Succesfully updated the notification");
+			    	$scope.fetchNotifications();
+			    }
+			    else{
+			    	AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+			    }
+			    
+			  }, function errorCallback(response) {
+			    console.log('In errorCallback '+JSON.stringify(response));
+			    
+			  });
+        }
+        $scope.updateNotificaation		= function(updateItem){
+			
+            $scope.notification = angular.copy(updateItem);
+            $scope.editingItem = angular.copy(updateItem);
+            $scope.isEditing = true;
+			console.log(updateItem);
+            
+            $('#notificationPopup').modal('show');
+			
+
+		}
+        
+        $('#notificationPopup').on('hidden.bs.modal', function (e) {
+            console.log('hidden event called');
+            if($scope.isEditing){
+                $scope.notification = {};
+                $scope.editingItem = {};
+                $scope.isEditing = false;                
+            }
+            $scope.notification.file = {};
+            $scope.$apply();
+            
+        });
+        
+        
+        $scope.doDisplay = function(item){
+            if(item.publishedBy === UserService.getUserId()){
+                return true;
+            }
+            return false;
         }
 	});

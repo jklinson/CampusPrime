@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import models.NewsObjects;
+import models.WriteUpObjects;
 
 public class NewsHandler {
 
@@ -20,8 +21,12 @@ public class NewsHandler {
 		ArrayList<NewsObjects> newsData = new ArrayList<NewsObjects>();
 		try
 		{			
-			String sql = "select news.newsId,news.title,news.description,news.publishedBy,news.publishedDate,"
-			+ "news.audienceId,news.fileId,news.isAproved,users.name from news inner join users on news.publishedBy = users.userId";
+			String sql = "select campus_prime.news.newsId,campus_prime.news.title,campus_prime.news.description,"
+					+ "campus_prime.news.publishedBy,campus_prime.news.publishedDate,campus_prime.news.audienceId,"
+					+ "campus_prime.news.fileId,campus_prime.news.isAproved,campus_prime.users.name,campus_prime.target_audience.year,"
+					+ "campus_prime.target_audience.classNum from campus_prime.news "
+					+ "inner join campus_prime.users on campus_prime.news.publishedBy = campus_prime.users.userId "
+					+ "inner join campus_prime.target_audience on campus_prime.news.audienceId = campus_prime.target_audience.targetId";
 			System.out.println(sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -37,6 +42,8 @@ public class NewsHandler {
 				news.setFileId(rs.getInt("fileId"));
 				news.setIsApproved(rs.getInt("isAproved"));
 				news.setPublishedUser(rs.getString("name"));
+				news.setYear(rs.getString("year"));
+				news.setClassNum(rs.getString("classNum"));
 				newsData.add(news);
 			}
 			System.out.println(newsData);
@@ -66,5 +73,41 @@ public class NewsHandler {
 		}
 		
 	}
-	
+	public boolean updateNews(NewsObjects obj,Connection connection) throws Exception
+	{
+		
+		try
+		{	
+			String sql = "update "+tableName+" set title = '"+obj.getTitle()+"', description = '"+obj.getDescription()
+			+"', audienceId = "+obj.getAudienceId()+ ", isAproved = "+obj.getIsApproved()
+			+ ", fileId = "+obj.getFileId()+", publishedDate = '"+obj.getPublishedDate()+"', publishedBy = "+obj.getPublishedBy()
+			+ " where newsId ="+obj.getNewsId();
+			System.out.println("sql "+sql);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.executeUpdate();			
+			return true;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
+	}
+	public boolean deleteNews(NewsObjects obj,Connection connection) throws Exception
+	{
+		
+		try
+		{	
+			String sql = "DELETE FROM "+tableName+" WHERE newsId ="+obj.getNewsId();
+			System.out.println("sql "+sql);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.executeUpdate();			
+			return true;
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
+	}
 }

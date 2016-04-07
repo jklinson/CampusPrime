@@ -141,7 +141,8 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        <button type="button" class="btn btn-primary" ng-click="saveCalendarEvents()">Upload</button>
+	        <button type="button" class="btn btn-primary" ng-show="!isEditing" ng-click="saveCalendarEvents()">Upload</button>
+            <button type="button" class="btn btn-primary" ng-show="isEditing" ng-click="editCalendarEvents()">Save</button>
 	      </div>
 	    </div>
 	  </div>

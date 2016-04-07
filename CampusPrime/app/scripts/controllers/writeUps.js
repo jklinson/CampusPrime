@@ -16,7 +16,9 @@ angular.module('campusPrime')
 		$scope.writeupTypes = ['Literatur', 'Drawing', 'Pictures', 'Videos'];
         $scope.filterTag = {'isApproved':1};
         $scope.userId = UserService.getUserId();
-
+        $scope.editingItem = {};
+        $scope.isEditing = false;
+        
 		$scope.fetchWriteUps = function() {
 
 			$http({
@@ -104,12 +106,94 @@ angular.module('campusPrime')
 
 		}
 
+		$scope.deleteWriteUps		= function(deleteItem){
+			
+			console.log(deleteItem);
+			$http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/deleteWriteUps',
+			  data: deleteItem
+
+			}).then(function successCallback(response) {
+			    console.log('In successCallback '+JSON.stringify(response));
+			    if (response.data.status === Constants.success ) {
+			    	$('#writeUpPopup').modal('hide'); 
+			    	AlertService.showAlert("Campus Prime!", "Succesfully deleted the writeup");
+			    	$scope.fetchWriteUps();
+			    }
+			    else{
+			    	AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+			    }
+			    
+			  }, function errorCallback(response) {
+			    console.log('In errorCallback '+JSON.stringify(response));
+			    
+			  });
+
+		}
+        
+        $scope.editWriteup          = function(){
+            $http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/updateWriteUps',
+			  data: $scope.writeUp
+
+			}).then(function successCallback(response) {
+			    console.log('In successCallback '+JSON.stringify(response));
+			    if (response.data.status === Constants.success ) {
+			    	$('#writeUpPopup').modal('hide') 
+			    	AlertService.showAlert("Campus Prime!", "Succesfully updated the writeup");
+			    	$scope.fetchWriteUps();
+			    }
+			    else{
+			    	AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+			    }
+			    
+			  }, function errorCallback(response) {
+			    console.log('In errorCallback '+JSON.stringify(response));
+			    
+			  });
+        }
+        $scope.updateWriteUps		= function(updateItem){
+			
+            $scope.writeUp = angular.copy(updateItem);
+            $scope.editingItem = angular.copy(updateItem);
+            $scope.isEditing = true;
+			console.log(updateItem);
+            
+            $('#writeUpPopup').modal('show');
+			
+
+		}
+        
+        $('#writeUpPopup').on('hidden.bs.modal', function (e) {
+            console.log('hidden event called');
+            if($scope.isEditing){
+                $scope.writeUp = {};
+                $scope.editingItem = {};
+                $scope.isEditing = false;
+            }
+            $scope.writeUp.file = {};
+            $scope.$apply();
+            
+        });
+        
 		$scope.getClass = function(value){
             if(value === 'All' && $scope.filterTag.isApproved===1){
                 return 'active';
             }
             
             return '';
+        }
+        
+        $scope.doDisplay = function(item){
+            
+            console.log(item.publishedBy + "===" +UserService.getUserId());
+            console.log(item.publishedBy === UserService.getUserId());
+            if(item.publishedBy === UserService.getUserId()){
+                return true;
+            }
+            return false;
         }
 
 	});
