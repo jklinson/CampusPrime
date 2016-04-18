@@ -25,9 +25,6 @@ angular.module('campusPrime')
               url: 'http://localhost:8080/RESTfulProject/REST/WebService/GetNews'
 
             }).then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-                console.log('In successCallback '+JSON.stringify(response));
                 if (response.data.status === Constants.success ) {
                     $scope.newses = JSON.parse(response.data.news);
                 };

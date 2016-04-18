@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('NewsAdminCntrl', function($scope, $location, $http, AlertService, AudienceService) {
+	.controller('NewsAdminCntrl', function($scope, $location, $http, AlertService, AudienceService, UserService) {
         $scope.newses = [];
         $scope.filterArray = [
             {name:'All', filterTag: {}},
@@ -29,13 +29,16 @@ angular.module('campusPrime')
               url: 'http://localhost:8080/RESTfulProject/REST/WebService/GetNews'
 
             }).then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-                console.log('In successCallback '+JSON.stringify(response));
+                
                 if (response.data.status === Constants.success ) {
                     $scope.newses = JSON.parse(response.data.news);
                 };
-                
+                var user = UserService.getUser();
+                console.log($scope.newses);
+                $scope.newses = $scope.newses.filter(function(news){
+                    return (news.audienceId === user.adminTargetId);
+                });
+                console.log($scope.newses);
               }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.

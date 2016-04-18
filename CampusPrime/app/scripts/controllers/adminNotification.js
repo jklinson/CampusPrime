@@ -31,15 +31,18 @@ angular.module('campusPrime')
 			}).then(function successCallback(response) {
 			    // this callback will be called asynchronously
 			    // when the response is available
-			    console.log('In successCallback '+JSON.stringify(response));
+			    //console.log('In successCallback '+JSON.stringify(response));
 			    if (response.data.status === Constants.success ) {
 			    	$scope.notifications = JSON.parse(response.data.notifications);
 			    };
-			    
+			    var user = UserService.getUser();
+					$scope.notifications = $scope.notifications.filter(function(not){
+							return (not.audienceId === user.adminTargetId);
+					});
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs
 			    // or server returns response with an error status.
-			    console.log('In errorCallback '+JSON.stringify(response));
+			    //console.log('In errorCallback '+JSON.stringify(response));
 			    AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
 			  });
 			
@@ -51,14 +54,14 @@ angular.module('campusPrime')
         
 			$scope.deleteNotification		= function(deleteItem){
 
-				console.log(deleteItem);
+				//console.log(deleteItem);
 				$http({
 					method: 'POST',
 					url: 'http://localhost:8080/RESTfulProject/REST/WebService/deleteNotifications',
 					data: deleteItem
 
 				}).then(function successCallback(response) {
-					console.log('In successCallback '+JSON.stringify(response));
+					//console.log('In successCallback '+JSON.stringify(response));
 					if (response.data.status === Constants.success ) {
 						AlertService.showAlert("Campus Prime!", "Succesfully deleted the notification");
 						$scope.fetchNotifications();
@@ -68,7 +71,7 @@ angular.module('campusPrime')
 					}
 
 				}, function errorCallback(response) {
-					console.log('In errorCallback '+JSON.stringify(response));
+					//console.log('In errorCallback '+JSON.stringify(response));
 
 				});
 
@@ -83,7 +86,7 @@ angular.module('campusPrime')
 					data: notification
 
 				}).then(function successCallback(response) {
-					console.log('In successCallback '+JSON.stringify(response));
+					//console.log('In successCallback '+JSON.stringify(response));
 					if (response.data.status === Constants.success ) {
 						AlertService.showAlert("Campus Prime!", "Succesfully approved the Notification");
 						$scope.fetchNotifications();
@@ -93,7 +96,7 @@ angular.module('campusPrime')
 					}
 
 				}, function errorCallback(response) {
-					console.log('In errorCallback '+JSON.stringify(response));
+					//console.log('In errorCallback '+JSON.stringify(response));
 
 				});
 			}
