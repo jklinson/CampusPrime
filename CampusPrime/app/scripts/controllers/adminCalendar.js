@@ -23,7 +23,6 @@ angular.module('campusPrime')
         }
         
 		$scope.getDisplayEventDate = function (startsAt, endsAt) {
-			console.log('startsAt  '+startsAt +"  endsAt "+endsAt);
 			var startDate  =  new Date(parseInt(startsAt));
 			var endDate    =  new Date(parseInt(endsAt));
 			var startDateString  = startDate.getDate()+"-"+(startDate.getMonth()+1)+"-"+startDate.getFullYear()+" "+

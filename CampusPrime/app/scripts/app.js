@@ -48,7 +48,8 @@ angular
       .state('admin', {
         url: '/admin',
         parent: 'base',
-        templateUrl: 'views/admin/adminBase.html'
+        templateUrl: 'views/admin/adminBase.html',
+        controller: 'AdminCntrl'
       })
       .state('dashboard', {
         url: '/dashboard',
