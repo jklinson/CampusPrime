@@ -26,11 +26,15 @@ angular.module('campusPrime')
 			}).then(function successCallback(response) {
 			    // this callback will be called asynchronously
 			    // when the response is available
-			    console.log('In successCallback '+JSON.stringify(response));
+			    //console.log('In successCallback '+JSON.stringify(response));
 			    if (response.data.status === Constants.success ) {
 			    	$scope.notifications = JSON.parse(response.data.notifications);
 			    };
-			    
+			    var user = UserService.getUser();
+				$scope.notifications = $scope.notifications.filter(function(not){
+						return (not.isApproved ===1 && ((not.audienceId === 17 )
+						||( not.audienceId === user.adminTargetId  )));
+				});
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs
 			    // or server returns response with an error status.
@@ -70,8 +74,7 @@ angular.module('campusPrime')
 		$scope.saveNotifications		= function(fileId){
 
 			$scope.notification.fileId = fileId;
-			$scope.notification.audienceId = 1;
-			$scope.notification.isApproved = 1;
+			$scope.notification.isApproved =0;
 			$scope.notification.publishedBy = UserService.getUserId();
 			$scope.notification.publishedDate = new Date().getTime();
             // $scope.notification.isTeacher= $scope.notification.isTeacher? 1:0;
@@ -203,6 +206,7 @@ angular.module('campusPrime')
                 $scope.notification = {};       
                 $scope.notification.file = {};                
                 $scope.notification.allowAll = 1;
+				$scope.notification.isTeacher =1;
                 $scope.$apply();                 
              }
             else{

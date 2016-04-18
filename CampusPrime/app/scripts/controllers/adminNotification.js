@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('NotificationAdminCntrl', function($scope, $location, $http, AlertService, AudienceService) {
+	.controller('NotificationAdminCntrl', function($scope, $location, $http, AlertService, AudienceService, UserService) {
         $scope.notifications = [];
         $scope.filterArray = [
             {name:'All', filterTag: {}},
@@ -37,7 +37,7 @@ angular.module('campusPrime')
 			    };
 			    var user = UserService.getUser();
 					$scope.notifications = $scope.notifications.filter(function(not){
-							return (not.audienceId === user.adminTargetId);
+							return (not.year === user.adminOfYear && not.classNum === user.adminOfClass);
 					});
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs

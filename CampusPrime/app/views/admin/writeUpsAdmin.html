@@ -34,8 +34,8 @@
                     <td>{{eachWriteUp.publishedUser}}</td>
                     <td><span ng-bind="getFormatedDate(eachWriteUp.publishedDate)"></span></td>
                     <td>   
-                        <button type="button" ng-show="eachWriteUp.isApproved" class="btn btn-danger" ng-click="eachWriteUp.isApproved =0;updateWriteUp(eachWriteUp)">Disapprove</button>
-                        <button type="button" ng-show="!eachWriteUp.isApproved" class="btn btn-success" ng-click="eachWriteUp.isApproved =1;updateWriteUp(eachWriteUp)">Approve</button>                        
+                        <button type="button" ng-show="eachWriteUp.isApproved" class="btn btn-danger" ng-click="eachWriteUp.isApproved =0;updateWriteUps(eachWriteUp)">Disapprove</button>
+                        <button type="button" ng-show="!eachWriteUp.isApproved" class="btn btn-success" ng-click="eachWriteUp.isApproved =1;updateWriteUps(eachWriteUp)">Approve</button>                        
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger" ng-click="deleteWriteUp(eachWriteUp)">Delete</button>

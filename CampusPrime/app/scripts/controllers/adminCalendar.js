@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('CalendarAdminCntrl', function($scope, $location, $http, AlertService, AudienceService) {
+	.controller('CalendarAdminCntrl', function($scope, $location, $http, AlertService, AudienceService, UserService) {
         $scope.events = [];
         $scope.filterArray = [
             {name:'All', filterTag: {}},
@@ -46,7 +46,7 @@ angular.module('campusPrime')
 			    };
 			    var user = UserService.getUser();
                 $scope.events = $scope.events.filter(function(event){
-                    return (event.audienceId === user.adminTargetId);
+                    return (event.year === user.adminOfYear && event.classNum === user.adminOfClass);
                 });
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs

@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('WriteUpAdminCntrl', function($scope, $location, $http, AlertService, AudienceService) {
+	.controller('WriteUpAdminCntrl', function($scope, $location, $http, AlertService, AudienceService, UserService) {
         $scope.writeUps = [];
         $scope.filterArray = [
             {name:'All', filterTag: {}},
@@ -37,7 +37,7 @@ angular.module('campusPrime')
 			    };
 			    var user = UserService.getUser();
                 $scope.writeUps = $scope.writeUps.filter(function(writeUp){
-                        return (writeUp.audienceId === user.adminTargetId);
+                        return (writeUp.year === user.adminOfYear && writeUp.classNum === user.adminOfClass);
                 });
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs
@@ -101,6 +101,7 @@ angular.module('campusPrime')
 			    
 			  }, function errorCallback(response) {
 			    //consolle.log('In errorCallback '+JSON.stringify(response));
+                AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later. \n"+response);
 			    
 			  });
         }

@@ -28,7 +28,10 @@ angular.module('campusPrime')
                 if (response.data.status === Constants.success ) {
                     $scope.newses = JSON.parse(response.data.news);
                 };
-                
+                var user = UserService.getUser();
+                $scope.newses = $scope.newses.filter(function(news){
+                    return (news.audienceId === user.adminTargetId || news.audienceId == 17);
+                });
               }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
@@ -245,7 +248,8 @@ angular.module('campusPrime')
             if(!$scope.isEditing){
                 $scope.news = {};       
                 $scope.news.file = {};                
-                $scope.news.allowAll = 1; 
+                $scope.news.allowAll = 1;
+                $scope.news.isTeacher =1; 
                 $scope.$apply();
             }
             else{

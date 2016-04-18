@@ -63,6 +63,11 @@ angular.module('campusPrime')
                 if (response.data.status === Constants.success ) {
                     $scope.events = JSON.parse(response.data.calendarEvents);
                     console.log($scope.events);
+                    var user = UserService.getUser();
+                    $scope.events = $scope.events.filter(function(event){
+                            return ((event.isApproved ===1) && ((event.classNum === user.adminOfClass && 
+                            event.year === user.adminOfYear) || event.audienceId  ===17));
+                    });
                     angular.forEach($scope.events, function(value, key) {
 					  value.startsAt = new Date(parseInt(value.startsAt));
 					  value.endsAt = new Date(parseInt(value.endsAt));
@@ -87,6 +92,7 @@ angular.module('campusPrime')
             $scope.event.publishedDate 	= new Date().getTime();
             $scope.event.startsAt   	= $scope.event.startsAt.getTime();
             $scope.event.endsAt   		= $scope.event.endsAt.getTime();
+            $scope.event.isApproved     = 0;
             // $scope.event.isTeacher      = $scope.event.isTeacher? 1:0;
             if($scope.event.allowAll === 1){
                 $scope.event.year = 'all';
@@ -207,6 +213,7 @@ angular.module('campusPrime')
                 $scope.event = {};       
                 $scope.event.file = {};                
                 $scope.event.allowAll = 1; 
+                $scope.event.isTeacher =1;
                 $scope.$apply();
             }
             else{

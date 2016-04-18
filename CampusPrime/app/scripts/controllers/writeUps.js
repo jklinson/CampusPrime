@@ -33,6 +33,10 @@ angular.module('campusPrime')
 			    if (response.data.status === Constants.success ) {
 			    	$scope.writeups = JSON.parse(response.data.writeups);
 			    };
+				var user = UserService.getUser();
+                $scope.writeups = $scope.writeups.filter(function(writeup){
+                        return (writeup.audienceId === user.adminTargetId || writeup.audienceId === 17);
+                });
 			    
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs
@@ -255,7 +259,8 @@ angular.module('campusPrime')
             if(!$scope.isEditing){
                 $scope.writeUp = {};       
                 $scope.writeUp.file = {};                
-                $scope.writeUp.allowAll = 1;
+                $scope.writeUp.allowAll = 1;				
+                $scope.writeUp.isTeacher = 1;
                 $scope.$apply();
             }
             else{

@@ -34,11 +34,9 @@ angular.module('campusPrime')
                     $scope.newses = JSON.parse(response.data.news);
                 };
                 var user = UserService.getUser();
-                console.log($scope.newses);
                 $scope.newses = $scope.newses.filter(function(news){
-                    return (news.audienceId === user.adminTargetId);
+                    return (news.year === user.adminOfYear && news.classNum === user.adminOfClass);
                 });
-                console.log($scope.newses);
               }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
