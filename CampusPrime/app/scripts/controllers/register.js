@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('RegisterCtrl', function($scope, $location, $http, AlertService) {
+	.controller('RegisterCtrl', function($scope, $location, $http, AlertService, AudienceService) {
 
 		$scope.selectedRole = 'Student';
 
@@ -45,27 +45,14 @@ angular.module('campusPrime')
 			  });
 		}
 
-		$scope.getYearAncClasses	= function() {
-
-			$http({
-			  method: 'GET',
-			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/GetYearAndClass'
-
-			}).then(function successCallback(response) {
-			    console.log('In successCallback '+JSON.stringify(response));
-			    if(response.data.status === Constants.success){
-			    	$scope.yearClassList = JSON.parse(response.data.yearClassList);
-			    	console.log($scope.yearClassList);
-			    	console.log(JSON.parse(response.data.yearClassList));
-			    }else{
-			    	AlertService.showAlert("Campus Prime", response.data.message + "\n Please try  again later.");
-			    }
-			  }, function errorCallback(response) {
-			    console.log('In errorCallback '+JSON.stringify(response));
-			  });
-		}
-
-		$scope.getYearAncClasses();
+		AudienceService.getYearAncClasses(
+            function(yearClassList) {
+                $scope.yearClassList = yearClassList;
+            }, 
+            function(error) {
+                AlertService.showAlert("Campus Prime", error + "\n Please try  again later.");
+            }
+        );
         
         $scope.getDisplayYear = function(year) {
             return year +' - '+ (parseInt(year)+4);

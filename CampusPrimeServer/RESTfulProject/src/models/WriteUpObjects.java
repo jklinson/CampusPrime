@@ -13,12 +13,14 @@ public class WriteUpObjects {
 	private int fileId;
 	private int isApproved;
 	private String type;
+	private String publishedUser;
+	private String year;
+	private String classNum;
+	private int clapCount;
+	private int myClapCount;
+	private String fileType;
+	private int isTeacher;
 	
-	
-	
-	
-	
-
 	public WriteUpObjects(JsonObject json) {
 		
 		this.setWriteUpId(json.has("writeUpId")? json.get("writeUpId").getAsInt():-1);
@@ -30,6 +32,9 @@ public class WriteUpObjects {
 		this.setFileId(json.has("fileId")? json.get("fileId").getAsInt():-1);
 		this.setIsApproved(json.has("isApproved")? json.get("isApproved").getAsInt():-1);
 		this.setType(json.has("type")? json.get("type").getAsString():"");
+		this.setYear(json.has("year")? json.get("year").getAsString():"");
+		this.setClassNum(json.has("classNum")? json.get("classNum").getAsString():"");
+		this.setIsTeacher(json.has("isTeacher")? json.get("isTeacher").getAsInt():-1);
 		
 	}
 	public WriteUpObjects() {
@@ -142,9 +147,52 @@ public class WriteUpObjects {
 	public void setType(String type) {
 		this.type = type;
 	}
+	public String getPublishedUser() {
+		return publishedUser;
+	}
+	public void setPublishedUser(String publishedUser) {
+		this.publishedUser = publishedUser;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getClassNum() {
+		return classNum;
+	}
+	public void setClassNum(String classNum) {
+		this.classNum = classNum;
+	}
 	
+	public int getClapCount() {
+		return clapCount;
+	}
+	public void setClapCount(int clapCount) {
+		this.clapCount = clapCount;
+	}
+	public int getMyClapCount() {
+		return myClapCount;
+	}
+	public void setMyClapCount(int myClapCount) {
+		this.myClapCount = myClapCount;
+	}
+	
+	public String getFileType() {
+		return fileType;
+	}
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+	public int getIsTeacher() {
+		return isTeacher;
+	}
+	public void setIsTeacher(int isTeacher) {
+		this.isTeacher = isTeacher;
+	}
 	public String convertToString() {
-		return "'"+this.title+"', '"+ this.description+"', "+ this.publishedBy+", '" +this.publishedDate+"', "+this.audienceId+", "+this.fileId+", "+this.isApproved+" ,'"+this.type+"'";
+		return "'"+this.title+"', '"+ this.description+"', "+ this.publishedBy+", '" +this.publishedDate+"', "+this.fileId+", "+this.isApproved+" ,'"+this.type+"', ";
 	}
 
 	

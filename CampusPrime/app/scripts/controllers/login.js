@@ -12,10 +12,13 @@ angular.module('campusPrime')
 
 
 		$scope.user 	= {};
-
+		
+		$scope.rememberMe = localStorage.getItem('rememberMe')?localStorage.getItem('rememberMe') : "false";
+		if($scope.rememberMe === "true"){
+			$location.path('/dashboard');
+		}
 		$scope.submit = function() {
-
-
+			
 			$http({
 			  method: 'POST',
 			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/checkLogin',
@@ -26,6 +29,7 @@ angular.module('campusPrime')
 			    // when the response is available
 			    console.log('In successCallback '+JSON.stringify(response));
 			    if(response.data.status === Constants.success){
+						localStorage.setItem('rememberMe',$scope.rememberMe);
 			    	UserService.setUser(response.data.user);
 			    	console.log('UserService '+ UserService.getUser());
 			    	console.log('UserService '+ UserService.getUserId());

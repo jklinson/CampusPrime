@@ -51,12 +51,27 @@ public class UserManager {
 		return userDetails;
 	}
 	public void verifyEmail(int userId)throws Exception {
-		UsersObjects userDetails = null;
+		try {
+			    Database database= new Database();
+			    Connection connection = database.Get_Connection();			    
+				UserHandler handler= new UserHandler();
+				handler.verifyEmail(connection, userId);
+				
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	public void updateUser(String details)throws Exception {
 		try {
 			    Database database= new Database();
 			    Connection connection = database.Get_Connection();
-				UserHandler user= new UserHandler();
-				user.verifyEmail(connection, userId);
+			    JsonParser parser = new JsonParser();
+				JsonObject jsonObject = new JsonObject();
+				jsonObject = (JsonObject)parser.parse(details);
+				System.out.println("2. "+jsonObject.toString());
+				UsersObjects user= new UsersObjects(jsonObject);
+				UserHandler handler= new UserHandler();
+				handler.updateUser(connection, user);;
 				
 		} catch (Exception e) {
 			throw e;
@@ -82,6 +97,14 @@ public class UserManager {
 			throw e;
 		}
 		return respoUser;
+	}
+	
+	public void checkAndSendMail(String mail)throws Exception {
+		UsersObjects respoUser;
+		System.out.println("Email "+mail);
+		respoUser = GetUserByMail(mail);
+		System.out.println("Email from db "+respoUser.getEmail());
+		SendEmail.sendPasswordEmail(respoUser);				
 	}
 	
 

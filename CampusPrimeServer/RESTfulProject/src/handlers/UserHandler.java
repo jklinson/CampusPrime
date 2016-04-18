@@ -20,7 +20,14 @@ public class UserHandler {
 		ArrayList<UsersObjects> userData = new ArrayList<UsersObjects>();
 		try
 		{			
-			String sql = "SELECT "+coloumnNames+" FROM "+tableName;
+			String sql = "SELECT campus_prime.users.userId, campus_prime.users.email, campus_prime.users.password, "
+					+ "campus_prime.users.name,campus_prime.users.mobileNum, campus_prime.users.year, "
+					+ "campus_prime.users.department, campus_prime.users.uniqueId, campus_prime.users.classOrSRoom,"
+					+ " campus_prime.users.isActive, campus_prime.users.isTeacher, campus_prime.users.isEmailVerified"
+					+ " ,(campus_prime.admins.userId is not null) isAdmin, campus_prime.admins.year as adminOfYear, "
+					+ "campus_prime.admins.class as adminOfClass, campus_prime.admins.id as adminId, "
+					+ "campus_prime.admins.audienceID as targetId FROM campus_prime.users left outer join campus_prime.admins "
+					+ "on campus_prime.users.userId = campus_prime.admins.userId;";
 			System.out.println(sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			
@@ -39,7 +46,12 @@ public class UserHandler {
 				user.setClassOrSRoom(rs.getString("classOrSRoom"));
 				user.setActive(rs.getBoolean("isActive"));
 				user.setTeacher(rs.getBoolean("isTeacher"));
-				user.setEmailVerified(rs.getBoolean("isTeacher"));
+				user.setEmailVerified(rs.getBoolean("isEmailVerified"));
+				user.setAdmin(rs.getBoolean("isAdmin"));
+				user.setAdminOfYear(rs.getString("adminOfYear"));
+				user.setAdminOfClass(rs.getString("adminOfClass"));
+				user.setAdminId(rs.getInt("adminId"));
+				user.setAdminTargetId(rs.getInt("targetId"));
 				userData.add(user);
 			}
 			return userData;
@@ -75,6 +87,7 @@ public class UserHandler {
 				user.setActive(rs.getBoolean("isActive"));
 				user.setTeacher(rs.getBoolean("isTeacher"));
 				user.setEmailVerified(rs.getBoolean("isEmailVerified"));
+				user.setPassword(rs.getString("password"));
 				System.out.println("isEmailVerified " +rs.getBoolean("isEmailVerified"));
 			}
 			return user;
@@ -120,12 +133,37 @@ public class UserHandler {
 		}
 		
 	}
+	public void updateUser(Connection connection, UsersObjects user) throws Exception
+	{
+		//{"email":"tester123@gmail.com","name":"myName","password":"qwerty","mobileNum":"9896888778","year":"4","department":"CS","uniqueId":"3434","classOrSRoom":"CS_B","isActive":0,"isTeacher":0,"isEmailVerified":0}
+		
+		try
+		{	
+			String sql = "update "+tableName+" set isActive ="+ user.isActive() +" where userId = "+user.getUserId();
+			System.out.println("sql "+sql);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.executeUpdate();			
+		}
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
+	}
 
 	public UsersObjects checkLogin(UsersObjects userOb, Connection connection) throws Exception {
 		try
 		{
 			UsersObjects user = new UsersObjects();
-			String sql = "SELECT "+coloumnNames+" FROM "+tableName+" where email='"+userOb.getEmail()+"';";
+			String sql = "SELECT campus_prime.users.userId, campus_prime.users.email, campus_prime.users.password, "
+					+ "campus_prime.users.name,campus_prime.users.mobileNum, campus_prime.users.year, "
+					+ "campus_prime.users.department, campus_prime.users.uniqueId, campus_prime.users.classOrSRoom,"
+					+ " campus_prime.users.isActive, campus_prime.users.isTeacher, campus_prime.users.isEmailVerified"
+					+ " ,(campus_prime.admins.userId is not null) isAdmin, campus_prime.admins.year as adminOfYear, "
+					+ "campus_prime.admins.class as adminOfClass, campus_prime.admins.id as adminId, "
+					+ "campus_prime.admins.audienceID as targetId FROM campus_prime.users left outer join campus_prime.admins "
+					+ "on campus_prime.users.userId = campus_prime.admins.userId "
+					+ "where campus_prime.users.email = '"+userOb.getEmail()+"';";
 			System.out.println(sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -144,7 +182,11 @@ public class UserHandler {
 				user.setActive(rs.getBoolean("isActive"));
 				user.setTeacher(rs.getBoolean("isTeacher"));
 				user.setEmailVerified(rs.getBoolean("isEmailVerified"));
-				System.out.println("isEmailVerified " +rs.getBoolean("isEmailVerified"));
+				user.setAdmin(rs.getBoolean("isAdmin"));
+				user.setAdminOfYear(rs.getString("adminOfYear"));
+				user.setAdminOfClass(rs.getString("adminOfClass"));
+				user.setAdminId(rs.getInt("adminId"));
+				user.setAdminTargetId(rs.getInt("targetId"));
 			}
 			return user;
 		}

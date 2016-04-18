@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('CalendarCtrl', function($scope, $rootScope, $location, moment, UserService, $http, AlertService) {
+	.controller('CalendarCtrl', function($scope, $rootScope, $location, moment, UserService, $http, AlertService, AudienceService) {
 
 		$rootScope.currentPage = 'Calendar';
 		$scope.calendarView = 'month';
@@ -16,8 +16,8 @@ angular.module('campusPrime')
 	    $scope.events = [];
         $scope.editingItem = {};
         $scope.isEditing = false;
-
 	    $scope.isCellOpen = true;
+        $scope.yearClassList = [];
 
 	    $scope.eventClicked = function(event) {
 	      alert('Clicked', event);
@@ -82,13 +82,17 @@ angular.module('campusPrime')
 
 
         $scope.saveCalendarEvents    = function(fileId){
-
-            $scope.event.audienceId 	= 1;
-            $scope.event.isApproved 	= 1;
+           
             $scope.event.publishedBy 	= UserService.getUserId();
             $scope.event.publishedDate 	= new Date().getTime();
             $scope.event.startsAt   	= $scope.event.startsAt.getTime();
             $scope.event.endsAt   		= $scope.event.endsAt.getTime();
+            // $scope.event.isTeacher      = $scope.event.isTeacher? 1:0;
+            if($scope.event.allowAll === 1){
+                $scope.event.year = 'all';
+                $scope.event.classNum = 'all';
+                $scope.event.isTeacher = 1;
+            }
             console.log($scope.event);
             $http({
               method: 'POST',
@@ -150,7 +154,7 @@ angular.module('campusPrime')
 			  }, function errorCallback(response) {
 			    console.log('In errorCallback '+JSON.stringify(response));
 			    
-			  });
+			  }); 
 
 		}
         
@@ -159,6 +163,11 @@ angular.module('campusPrime')
             var data = angular.copy($scope.event);
             data.startsAt   	= data.startsAt.getTime();
             data.endsAt   		= data.endsAt.getTime();
+            if(data.allowAll == 1){
+                data.year = 'all';
+                data.classNum = 'all';
+                data.isTeacher = 1;
+            }
             
             $http({
 			  method: 'POST',
@@ -192,5 +201,37 @@ angular.module('campusPrime')
                 $scope.$apply();       
             }     
         });
+        
+        $('#calendarPopup').on('show.bs.modal', function (e) {
+            if(!$scope.isEditing){
+                $scope.event = {};       
+                $scope.event.file = {};                
+                $scope.event.allowAll = 1; 
+                $scope.$apply();
+            }
+            else{
+                if($scope.event.year === 'all'){
+                    $scope.event.allowAll = 1;
+                }
+                else{
+                    $scope.event.allowAll = 0;
+                }
+            }
+        }); 
+        
+        AudienceService.getYearAncClasses(
+            function(yearClassList) {
+                $scope.yearClassList = yearClassList;
+            }, 
+            function(error) {
+                AlertService.showAlert("Campus Prime", error + "\n Please try  again later.");
+            }
+        );
+        
+        $scope.getDisplayYear = function(year) {
+            if(year ==='all') return year;
+            return year +' - '+ (parseInt(year)+4);
+        }
+       
 
 	});

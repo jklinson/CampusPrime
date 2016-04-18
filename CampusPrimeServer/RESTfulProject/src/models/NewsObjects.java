@@ -15,6 +15,7 @@ public class NewsObjects {
 	private int isApproved;
 	private String year;
 	private String classNum;
+	private int isTeacher;
 	
 	public NewsObjects(JsonObject json) {
 			
@@ -26,6 +27,9 @@ public class NewsObjects {
 		this.setAudienceId(json.has("audienceId")? json.get("audienceId").getAsInt():-1);
 		this.setFileId(json.has("fileId")? json.get("fileId").getAsInt():-1);
 		this.setIsApproved(json.has("isApproved")? json.get("isApproved").getAsInt():-1);
+		this.setYear(json.has("year")? json.get("year").getAsString() : "");
+		this.setClassNum(json.has("classNum")? json.get("classNum").getAsString() : "");
+		this.setIsTeacher(json.has("isTeacher")? json.get("isTeacher").getAsInt():-1);
 		
 	}
 	public String getYear() {
@@ -145,8 +149,14 @@ public class NewsObjects {
 	public void setPublishedUser(String publishedUser) {
 		this.publishedUser = publishedUser;
 	}
+	public int getIsTeacher() {
+		return isTeacher;
+	}
+	public void setIsTeacher(int i) {
+		this.isTeacher = i;
+	}
 	public String convertToString() {
-		return "'"+this.title+"', '"+ this.description+"', "+ this.publishedBy+", '" +this.publishedDate+"', "+this.audienceId+", "+this.fileId+", "+this.isApproved;
+		return "'"+this.title+"', '"+ this.description+"', "+ this.publishedBy+", '" +this.publishedDate+"', "+this.fileId+", "+this.isApproved+", ";
 	}
 
 	

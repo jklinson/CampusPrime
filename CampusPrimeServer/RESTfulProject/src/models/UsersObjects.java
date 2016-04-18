@@ -11,13 +11,19 @@ public class UsersObjects {
 	private long mobileNum;
 	private String year;
 	private String department;
-	private String uniqueId;
+	private String uniqueId;	
 	private String classOrSRoom;
 	private boolean isActive;
 	private boolean isTeacher;
 	private boolean isEmailVerified;
+	private boolean isAdmin;
+	private String adminOfYear;
+	private String adminOfClass;
+	private int adminId;
+	private int adminTargetId;
 	
 	public UsersObjects(JsonObject jsonObject) {
+		this.setUserId(jsonObject.has("userId")? jsonObject.get("userId").getAsInt():0);
 		this.setEmail(jsonObject.has("email")?jsonObject.get("email").getAsString():"");
 		this.setName(jsonObject.has("name")?jsonObject.get("name").getAsString():"");
 		this.setPassword(jsonObject.has("password")?jsonObject.get("password").getAsString():"");
@@ -177,6 +183,36 @@ public class UsersObjects {
 		this.isEmailVerified = isEmailVerified;
 	}
 	
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+	public String getAdminOfYear() {
+		return adminOfYear;
+	}
+	public void setAdminOfYear(String adminOfYear) {
+		this.adminOfYear = adminOfYear;
+	}
+	public String getAdminOfClass() {
+		return adminOfClass;
+	}
+	public void setAdminOfClass(String adminOfClass) {
+		this.adminOfClass = adminOfClass;
+	}
+	public int getAdminId() {
+		return adminId;
+	}
+	public void setAdminId(int adminId) {
+		this.adminId = adminId;
+	}
+	public int getAdminTargetId() {
+		return adminTargetId;
+	}
+	public void setAdminTargetId(int adminTargetId) {
+		this.adminTargetId = adminTargetId;
+	}
 	public String convertToString() {
 		
 		return "'"+this.email+"', '"+ this.name+"', '"+ this.password+"', " +this.mobileNum+", '"+this.year+"', '"+this.department+"', '"+this.uniqueId+"', '"+this.classOrSRoom+"', "+this.isActive+", "+this.isTeacher+", "+this.isEmailVerified;

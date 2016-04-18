@@ -14,7 +14,7 @@ public class CalendarHandler {
 	public String coloumnNames = "calendarId,title,description,publishedBy,publishedDate,"
 			+ "audienceId,isAproved,startsAt,endsAt,type";
 	public String insertStmnt = "INSERT INTO "+tableName+" (title,description,publishedBy,publishedDate,"
-			+ "startsAt,endsAt,type,audienceId,isAproved) VALUES ";
+			+ "startsAt,endsAt,type,isAproved, audienceId) VALUES ";
 	
 	public ArrayList<CalendarObject> GetCalendarEvents(Connection connection) throws Exception
 	{
@@ -22,7 +22,11 @@ public class CalendarHandler {
 		try
 		{			
 			String sql = "select calendar.calendarId,calendar.title,calendar.description,calendar.publishedBy,calendar.publishedDate,"
-			+ "calendar.audienceId,calendar.isAproved,calendar.startsAt,calendar.endsAt,calendar.type,users.name from calendar inner join users on calendar.publishedBy = users.userId";
+			+ "calendar.audienceId,calendar.isAproved,calendar.startsAt,calendar.endsAt,calendar.type,users.name, "
+			+ "campus_prime.target_audience.classNum, campus_prime.target_audience.isTeacher, campus_prime.target_audience.year"
+			+ " from calendar "
+			+ "inner join users on calendar.publishedBy = users.userId "
+			+ "inner join campus_prime.target_audience on campus_prime.calendar.audienceId = campus_prime.target_audience.targetId";
 			System.out.println(sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -40,6 +44,9 @@ public class CalendarHandler {
 				calendar.setAudienceId(rs.getInt("audienceId"));
 				calendar.setIsApproved(rs.getInt("isAproved"));
 				calendar.setPublishedUser(rs.getString("name"));
+				calendar.setYear(rs.getString("year"));
+				calendar.setClassNum(rs.getString("classNum"));
+				calendar.setIsTeacher(rs.getInt("isTeacher"));
 				calendarData.add(calendar);
 			}
 			System.out.println(calendarData);
@@ -51,13 +58,13 @@ public class CalendarHandler {
 		}
 	}
 	
-	public boolean saveCalendar(CalendarObject calendarObject,Connection connection) throws Exception
+	public boolean saveCalendar(CalendarObject obj,Connection connection) throws Exception
 	{
-		//{"email":"tester123@gmail.com","name":"myName","password":"qwerty","mobileNum":"9896888778","year":"4","department":"CS","uniqueId":"3434","classOrSRoom":"CS_B","isActive":0,"isTeacher":0,"isEmailVerified":0}
 		
 		try
 		{	
-			String sql = insertStmnt +"("+calendarObject.convertToString()+")";
+			String sql = insertStmnt +"("+obj.convertToString()+
+					AudienceHandler.createSelectQuerry(obj.getYear(), obj.getClassNum(), obj.getIsTeacher())+")";
 			System.out.println("sql "+sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.executeUpdate();			
@@ -75,8 +82,9 @@ public class CalendarHandler {
 		try
 		{	
 			String sql = "update "+tableName+" set title = '"+obj.getTitle()+"', description = '"+obj.getDescription()
-			+"', audienceId = "+obj.getAudienceId()+ ", isAproved = "+obj.getIsApproved()+ ", startsAt = '"+obj.getStartsAt()
+			+"', isAproved = "+obj.getIsApproved()+ ", startsAt = '"+obj.getStartsAt()
 			+ "', endsAt = '"+obj.getEndsAt()+"', publishedDate = '"+obj.getPublishedDate()+"', publishedBy = "+obj.getPublishedBy()
+			+ ", audienceId = "+AudienceHandler.createSelectQuerry(obj.getYear(), obj.getClassNum(), obj.getIsTeacher())
 			+ " where calendarId ="+obj.getCalendarId();
 			System.out.println("sql "+sql);
 			PreparedStatement ps = connection.prepareStatement(sql);

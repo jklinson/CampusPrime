@@ -1,0 +1,48 @@
+ <div class="cpView" ng-controller="NotificationAdminCntrl">
+	<div class="container top20">
+        <div class="row">
+          <div class="col-xs-12">
+                <div class="col-xs-6 col-xs-offset-6">
+               <div class="col-xs-2"> Filter by :  </div>
+                <div class="col-xs-10">
+                        <select class="form-control" ng-model="filterVal"
+                        ng-options="item  as item.name for item in filterArray"></select> 
+                </div>
+                </div>  
+          </div>
+        </div>
+        <div class="row top50 bottom50 h-scroll">
+            <div class="col-xs-12">
+		<table class="table table-bordered">
+           <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>File</th>
+                    <th>Published By</th>
+                    <th>Published Date</th>
+                    <th>Approve</th>
+                    <th>Action</th>
+                </tr>
+           </thead>
+            <tbody>
+                <tr ng-repeat="eachNot in notifications | filter:filterVal.filterTag">
+                    <td>{{eachNot.title}}</td>
+                    <td><p>{{eachNot.description}}</p></td>
+                    <td><a ng-href={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+eachNot.fileId}}>View File</a></td>
+                    <td>{{eachNot.publishedUser}}</td>
+                    <td><span ng-bind="getFormatedDate(eachNot.publishedDate)"></span></td>
+                    <td>   
+                        <button type="button" ng-show="eachNot.isApproved" class="btn btn-danger" ng-click="eachNot.isApproved =0;updateNotification(eachNot)">Disapprove</button>
+                        <button type="button" ng-show="!eachNot.isApproved" class="btn btn-success" ng-click="eachNot.isApproved =1;updateNotification(eachNot)">Approve</button>                        
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" ng-click="deleteNotification(eachNot)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+            </div>
+        </div>
+    </div>
+</div>

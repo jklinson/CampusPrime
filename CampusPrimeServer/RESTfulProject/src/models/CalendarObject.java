@@ -15,6 +15,9 @@ public class CalendarObject {
 	private String startsAt;
 	private String endsAt;
 	private String type;
+	private String year;
+	private String classNum;
+	private int isTeacher;
 	
 	public CalendarObject(JsonObject json) {
 		
@@ -28,6 +31,9 @@ public class CalendarObject {
 		this.setType(json.has("type")? json.get("type").getAsString():"");
 		this.setAudienceId(json.has("audienceId")? json.get("audienceId").getAsInt():-1);
 		this.setIsApproved(json.has("isApproved")? json.get("isApproved").getAsInt():-1);
+		this.setYear(json.has("year")? json.get("year").getAsString():"");
+		this.setClassNum(json.has("classNum")? json.get("classNum").getAsString():"");
+		this.setIsTeacher(json.has("isTeacher")? json.get("isTeacher").getAsInt():-1);
 		
 	}
 	public CalendarObject() {
@@ -159,8 +165,26 @@ public class CalendarObject {
 	public void setType(String type) {
 		this.type = type;
 	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getClassNum() {
+		return classNum;
+	}
+	public void setClassNum(String classNum) {
+		this.classNum = classNum;
+	}
+	public int getIsTeacher() {
+		return isTeacher;
+	}
+	public void setIsTeacher(int isTeacher) {
+		this.isTeacher = isTeacher;
+	}
 	public String convertToString() {
-		return "'"+this.title+"', '"+ this.description+"', "+ this.publishedBy+", '" +this.publishedDate+"', '"+this.startsAt+"', '"+this.endsAt+"', '"+this.type+"', "+this.audienceId+", "+this.isApproved;
+		return "'"+this.title+"', '"+ this.description+"', "+ this.publishedBy+", '" +this.publishedDate+"', '"+this.startsAt+"', '"+this.endsAt+"', '"+this.type+"', "+this.isApproved+", ";
 	}
 
 	

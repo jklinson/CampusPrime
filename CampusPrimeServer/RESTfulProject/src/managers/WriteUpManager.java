@@ -12,13 +12,13 @@ import models.WriteUpObjects;
 
 public class WriteUpManager {
 
-	public ArrayList<WriteUpObjects> GetWriteUps()throws Exception {
+	public ArrayList<WriteUpObjects> GetWriteUps(int userId)throws Exception {
 		ArrayList<WriteUpObjects> writeUpDetails = null;
 		try {
 			    Database database= new Database();
 			    Connection connection = database.Get_Connection();
 				WriteUpHandler writeUpHandler= new WriteUpHandler();
-				writeUpDetails=writeUpHandler.GetWriteUps(connection);
+				writeUpDetails=writeUpHandler.GetWriteUps(connection, userId);
 				
 		} catch (Exception e) {
 			throw e;

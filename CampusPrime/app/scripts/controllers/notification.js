@@ -8,14 +8,15 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('NotificationCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService) {
+	.controller('NotificationCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService, AudienceService) {
 
 		$rootScope.currentPage = 'Notificaitons';
 		$scope.notifications = [];// notification array object for showing the list, populate after fetching from server
 		$scope.notification = {}; // notification object for mapping models in popup
         $scope.editingItem = {};
         $scope.isEditing = false;
-
+        $scope.yearClassList = [];
+        
 		$scope.fetchNotifications = function() {
 
 			$http({
@@ -73,6 +74,12 @@ angular.module('campusPrime')
 			$scope.notification.isApproved = 1;
 			$scope.notification.publishedBy = UserService.getUserId();
 			$scope.notification.publishedDate = new Date().getTime();
+            // $scope.notification.isTeacher= $scope.notification.isTeacher? 1:0;
+            if($scope.notification.allowAll === 1){
+                $scope.notification.year = 'all';
+                $scope.notification.classNum = 'all';
+                $scope.notification.isTeacher = 1;
+            }
 			console.log($scope.notification);
 			$http({
 			  method: 'POST',
@@ -133,6 +140,11 @@ angular.module('campusPrime')
 		}
         
         $scope.editNotification          = function(){
+            if($scope.notification.allowAll == 1){
+                $scope.notification.year = 'all';
+                $scope.notification.classNum = 'all';
+                $scope.notification.isTeacher = 1;
+            }
             $http({
 			  method: 'POST',
 			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/updateNotifications',
@@ -185,4 +197,35 @@ angular.module('campusPrime')
             }
             return false;
         }
+        
+         $('#notificationPopup').on('show.bs.modal', function (e) {
+             if(!$scope.isEditing){
+                $scope.notification = {};       
+                $scope.notification.file = {};                
+                $scope.notification.allowAll = 1;
+                $scope.$apply();                 
+             }
+            else{
+                if($scope.notification.year === 'all'){
+                    $scope.notification.allowAll = 1;
+                }
+                else{
+                    $scope.notification.allowAll = 0;
+                }
+            }
+        }); 
+        
+        AudienceService.getYearAncClasses(
+            function(yearClassList) {
+                $scope.yearClassList = yearClassList;
+            }, 
+            function(error) {
+                AlertService.showAlert("Campus Prime", error + "\n Please try  again later.");
+            }
+        );
+        $scope.getDisplayYear = function(year) {
+			if(year ==='all') return year;
+            return year +' - '+ (parseInt(year)+4);
+        }
+        
 	});

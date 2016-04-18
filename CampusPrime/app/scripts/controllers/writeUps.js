@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('WriteupCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService ) {
+	.controller('WriteupCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService, AudienceService ) {
 
 		$rootScope.currentPage = 'Write-Ups';
 		$scope.writeups = [];// write-up array object for showing the list, populate after fetching from server
@@ -17,13 +17,14 @@ angular.module('campusPrime')
         $scope.filterTag = {'isApproved':1};
         $scope.userId = UserService.getUserId();
         $scope.editingItem = {};
-        $scope.isEditing = false;
+        $scope.isEditing = false; 
+        $scope.yearClassList = [];       
         
 		$scope.fetchWriteUps = function() {
 
 			$http({
 			  method: 'GET',
-			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/GetWriteUps'
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/GetWriteUps/'+$scope.userId
 
 			}).then(function successCallback(response) {
 			    // this callback will be called asynchronously
@@ -72,10 +73,15 @@ angular.module('campusPrime')
 		$scope.saveWriteUps		= function(fileId){
 
 			$scope.writeUp.fileId = fileId;
-			$scope.writeUp.audienceId = 1;
-			$scope.writeUp.isApproved = 1;
+			$scope.writeUp.isApproved = 0;
 			$scope.writeUp.publishedBy = UserService.getUserId();
 			$scope.writeUp.publishedDate = new Date().getTime();
+            // $scope.writeUp.isTeacher= $scope.writeUp.isTeacher? 1:0;
+            if($scope.writeUp.allowAll === 1){
+                $scope.writeUp.year = 'all';
+                $scope.writeUp.classNum = 'all';
+                $scope.writeUp.isTeacher = 1;
+            }
 			console.log($scope.writeUp);
 			$http({
 			  method: 'POST',
@@ -133,6 +139,11 @@ angular.module('campusPrime')
 		}
         
         $scope.editWriteup          = function(){
+            if($scope.writeUp.allowAll == 1){
+                $scope.writeUp.year = 'all';
+                $scope.writeUp.classNum = 'all';
+                $scope.writeUp.isTeacher = 1;
+            }
             $http({
 			  method: 'POST',
 			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/updateWriteUps',
@@ -187,13 +198,88 @@ angular.module('campusPrime')
         }
         
         $scope.doDisplay = function(item){
-            
-            console.log(item.publishedBy + "===" +UserService.getUserId());
-            console.log(item.publishedBy === UserService.getUserId());
             if(item.publishedBy === UserService.getUserId()){
                 return true;
             }
             return false;
         }
+        
+        $scope.updateClaps = function(clapCount, writeUp){
+            console.log(clapCount + " " + writeUp.writeUpId);
+            
+            var updateClaps = {};
+            updateClaps.count = clapCount;
+            updateClaps.parentId = writeUp.writeUpId;
+            updateClaps.userId = UserService.getUserId();
+            var currentCount = angular.copy(writeUp.myClapCount);
+            var urlPath = "updateClaps";
+            if(currentCount ===0) urlPath = "saveClaps";
+            console.log('***********************');
+            console.log(urlPath);
+            $http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/'+urlPath,
+			  data: updateClaps
+
+			}).then(function successCallback(response) {
+			    // this callback will be called asynchronously
+			    // when the response is available
+			    console.log('In successCallback '+JSON.stringify(response));
+			    if (response.data.status === Constants.success ) {
+			    	writeUp.isCollapsed =true;
+                    console.log(writeUp.clapCount + '+'+clapCount+'-' + currentCount);
+                    writeUp.clapCount =  writeUp.clapCount + clapCount -currentCount;
+			    	AlertService.showAlert("Upload success!", "Succesfully updated the clap count");
+			    }
+			    else{
+			    	AlertService.showAlert("Upload Failed!", "Something wrong happened, Please try again later.");
+			    }
+			    
+			    
+			  }, function errorCallback(response) {
+			    // called asynchronously if an error occurs
+			    // or server returns response with an error status.
+			    console.log('In errorCallback '+JSON.stringify(response));
+			    
+			  });
+        }
+        
+        $scope.isImage = function(type){
+            var imageArray = ['png','jpg','JPG','PNG','JPEG','jpeg'];
+            if(imageArray.indexOf(type) >-1)
+                return true;
+            return false;
+        }
+        
+        $('#writeUpPopup').on('show.bs.modal', function (e) {
+            if(!$scope.isEditing){
+                $scope.writeUp = {};       
+                $scope.writeUp.file = {};                
+                $scope.writeUp.allowAll = 1;
+                $scope.$apply();
+            }
+            else{
+                if($scope.writeUp.year === 'all'){
+                    $scope.writeUp.allowAll = 1;
+                }
+                else{
+                    $scope.writeUp.allowAll = 0;
+                }
+            }
+        });
+        
+        AudienceService.getYearAncClasses(
+            function(yearClassList) {
+                $scope.yearClassList = yearClassList;
+            }, 
+            function(error) {
+                AlertService.showAlert("Campus Prime", error + "\n Please try  again later.");
+            }
+        );
+        $scope.getDisplayYear = function(year) {
+			if(year ==='all') return year;
+            return year +' - '+ (parseInt(year)+4);
+        }
+        
 
 	});

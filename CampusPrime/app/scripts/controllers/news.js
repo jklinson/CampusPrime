@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-    .controller('NewsCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService, $filter) {
+    .controller('NewsCtrl', function($scope, $rootScope, $location, $http, AlertService, UserService, $filter, AudienceService) {
 
         $rootScope.currentPage = 'News';
         $scope.myInterval = 5000;
@@ -16,7 +16,8 @@ angular.module('campusPrime')
         $scope.newsFilterTag = {'isApproved' :1};
         $scope.editingItem = {};
         $scope.isEditing = false;
-        
+        $scope.yearClassList = [];
+        $scope.isTeacher = UserService.getIsTeacher();
         $scope.fetchNews = function() {
 
             $http({
@@ -71,10 +72,15 @@ angular.module('campusPrime')
         $scope.saveNews     = function(fileId){
 
             $scope.news.fileId = fileId;
-            $scope.news.audienceId = 1;
-            $scope.news.isApproved = 1;
+            $scope.news.isApproved = 0;
             $scope.news.publishedBy = UserService.getUserId();
             $scope.news.publishedDate = new Date().getTime();
+            // $scope.news.isTeacher= $scope.news.isTeacher? 1:0;
+            if($scope.news.allowAll === 1){
+                $scope.news.year = 'all';
+                $scope.news.classNum = 'all';
+                $scope.news.isTeacher = 1;
+            }
             console.log($scope.news);
             $http({
               method: 'POST',
@@ -110,7 +116,7 @@ angular.module('campusPrime')
             return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
         }
         
-        $scope.getDisplayYear = function(year) {
+        $scope.getDisplayBatch = function() {
             return UserService.getUserBatch();
         }
         
@@ -187,6 +193,13 @@ angular.module('campusPrime')
 		}
         
         $scope.editNews          = function(){
+            
+            if($scope.news.allowAll == 1){
+                $scope.news.year = 'all';
+                $scope.news.classNum = 'all';
+                $scope.news.isTeacher = 1;
+            }
+            
             $http({
 			  method: 'POST',
 			  url: 'http://localhost:8080/RESTfulProject/REST/WebService/updateNews',
@@ -226,10 +239,27 @@ angular.module('campusPrime')
                 $scope.news = {};
                 $scope.editingItem = {};
                 $scope.isEditing = false;                
-            }
+            }           
             $scope.news.file = {};
-            $scope.$apply();            
+            $scope.$apply();     
         });
+        
+        $('#newsPopup').on('show.bs.modal', function (e) {
+            if(!$scope.isEditing){
+                $scope.news = {};       
+                $scope.news.file = {};                
+                $scope.news.allowAll = 1; 
+                $scope.$apply();
+            }
+            else{
+                if($scope.news.year === 'all'){
+                    $scope.news.allowAll = 1;
+                }
+                else{
+                    $scope.news.allowAll = 0;
+                }
+            }
+        });       
         
         
         $scope.doDisplay = function(item){
@@ -238,5 +268,19 @@ angular.module('campusPrime')
             }
             return false;
         }
+        
+        AudienceService.getYearAncClasses(
+            function(yearClassList) {
+                $scope.yearClassList = yearClassList;
+            }, 
+            function(error) {
+                AlertService.showAlert("Campus Prime", error + "\n Please try  again later.");
+            }
+        );
+        $scope.getDisplayYear = function(year) {
+            if(year ==='all') return year;
+            return year +' - '+ (parseInt(year)+4);
+        }
+        
 
     });

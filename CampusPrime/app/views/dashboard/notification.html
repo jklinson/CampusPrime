@@ -39,7 +39,35 @@
 	          <div class="form-group">
 	            <label class="control-label">Select file</label>
 	            <input class="form-control" type='file' file-model='notification.file'>
-	          </div>	          
+	          </div>
+              <div class="form-group">
+                <label class="control-label">Allow all users to view this Write ups?</label>
+                <div class="radio"> 
+                    <label><input type="radio" value=1 ng-model="notification.allowAll" >Yes</label>
+                    <label><input type="radio" value=0 ng-model="notification.allowAll" >No</label>
+                </div>
+              </div>
+              <div uib-collapse="notification.allowAll ==1">
+                <div class="form-group">
+                    <label class="control-label">Target Audience</label></br>
+                    <label class="control-label">Year</label>
+                    <select class="form-control" ng-model="notification.year">
+                        <option value="" selected disabled>Please select year</option>
+                        <option ng-repeat="option in yearClassList | unique:'year'" value="{{option.year}}">{{getDisplayYear(option.year)}} 
+                        </option>
+                    </select>
+                </div>	
+                <div class="form-group">
+                    <label ng-show="notification.year" class="control-label">Class</label>
+                    <select ng-show="notification.year" class="form-control" ng-model="notification.classNum">
+                        <option value="" selected disabled>Please select class</option>
+                        <option ng-repeat="option in yearClassList | filter:{year:notification.year}" value="{{option.classNum}}">{{option.classNum}}</option>
+                    </select>                  
+                    <div class="checkbox">
+                        <label><input type="checkbox" ng-true-value=1 ng-false-value=0 ng-model="notification.isTeacher">Teacher</label>
+                    </div>
+                </div>
+              </div>	          
 	        </form>
 	      </div>
 	      <div class="modal-footer">

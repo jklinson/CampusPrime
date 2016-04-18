@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-    .controller('DashboardCtrl', function($scope, $rootScope, $state, $cookieStore) {
+    .controller('DashboardCtrl', function($scope, $rootScope, $state, $cookieStore, UserService, $location) {
 
         $scope.$state = $state;
         /**
@@ -41,5 +41,12 @@ angular.module('campusPrime')
         window.onresize = function() {
             $scope.$apply();
         };
+        
+        $rootScope.isAdmin = UserService.isAdmin();
+        
+        $scope.logout = function(){
+            localStorage.clear();
+            $location.path('/login');
+        }
 
     });

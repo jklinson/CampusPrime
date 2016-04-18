@@ -6,7 +6,7 @@
        <div class="text-center">
         <h2 class="brand">Campus Prime</h2>
         <img src="images/sng.jpg" width="100%" class="img-circle" /><br />
-        <a ui-sref="login" class="btn btn-white btn-outline btn-rounded btn-sm">Logout</a>
+        <a  ng-click="logout()" class="btn btn-white btn-outline btn-rounded btn-sm">Logout</a>
       </div>
 
       <ul class="nav nav-sidebar">
@@ -14,6 +14,7 @@
         <li ng-class="{active: $state.includes('writeups')}"><a ui-sref="writeups">Write-ups</a></li>
         <li ng-class="{active: $state.includes('notification')}"><a ui-sref="notification">Notifications</a></li>
         <li ng-class="{active: $state.includes('calendar')}"><a ui-sref="calendar">Calendar</a></li>
+        <li ng-show ="isAdmin"><a ui-sref="admin">Admin</a></li>
       </ul>
 
     </div>

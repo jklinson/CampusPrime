@@ -50,4 +50,41 @@ public class SendEmail {
 				throw new RuntimeException(e);
 			}
 		}
+	 public static void sendPasswordEmail(UsersObjects usersObjects)
+	   {
+		 	System.out.println("in send mail function");
+			Properties props = new Properties();
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.socketFactory.port", "465");
+			props.put("mail.smtp.socketFactory.class",
+					"javax.net.ssl.SSLSocketFactory");
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.port", "465");
+	
+			Session session = Session.getDefaultInstance(props,
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(Constants.FROM_MAIL,Constants.FROM_MAIL_PASSWORD);
+					}
+				});
+	
+			try {
+	
+				Message message = new MimeMessage(session);
+				message.setFrom(new InternetAddress(Constants.FROM_MAIL));
+				message.setRecipients(Message.RecipientType.TO,
+						InternetAddress.parse(usersObjects.getEmail()));
+				message.setSubject("Campus Prime");
+				message.setText("Dear "+usersObjects.getName()+"," + 
+						"\n\n Your password is as given below. "
+						+ "\n\n Password : " + usersObjects.getPassword());
+	
+				Transport.send(message);
+	
+				System.out.println("Done");
+	
+			} catch (MessagingException e) {
+				throw new RuntimeException(e);
+			}
+		}
 }

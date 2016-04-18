@@ -78,7 +78,6 @@
 		            <option value="important">Important</option>
 		            <option value="warning">Warning</option>
 		            <option value="info">Info</option>
-		            <option value="inverse">Inverse</option>
 		            <option value="success">Success</option>
 		            <option value="special">Special</option>
 	          	</select>
@@ -136,7 +135,35 @@
             minute-step="15"
             show-meridian="true">
           </uib-timepicker>
-	          </div>	          
+	          </div>
+              <div class="form-group">
+                <label class="control-label">Allow all users to view this Write ups?</label>
+                <div class="radio"> 
+                    <label><input type="radio" value=1 ng-model="event.allowAll">Yes</label>
+                    <label><input type="radio" value=0 ng-model="event.allowAll">No</label>
+                </div>
+              </div>
+              <div uib-collapse="event.allowAll ==1">
+                <div class="form-group">
+                    <label class="control-label">Target Audience</label></br>
+                    <label class="control-label">Year</label>
+                    <select class="form-control" ng-model="event.year">
+                        <option value="" selected disabled>Please select year</option>
+                        <option ng-repeat="option in yearClassList | unique:'year'" value="{{option.year}}">{{getDisplayYear(option.year)}} 
+                        </option>
+                    </select>
+                </div>	
+                <div class="form-group">
+                    <label ng-show="event.year" class="control-label">Class</label>
+                    <select ng-show="event.year" class="form-control" ng-model="event.classNum">
+                        <option value="" selected disabled>Please select class</option>
+                        <option ng-repeat="option in yearClassList | filter:{year:event.year}" value="{{option.classNum}}">{{option.classNum}}</option>
+                    </select>                  
+                    <div class="checkbox">
+                        <label><input type="checkbox" ng-true-value=1 ng-false-value=0 ng-model="event.isTeacher">Teacher</label>
+                    </div>
+                </div>
+              </div>	          
 	        </form>
 	      </div>
 	      <div class="modal-footer">

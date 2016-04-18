@@ -21,8 +21,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import factory.JsonFactory;
+import managers.AdminManager;
 import managers.AudienceManager;
 import managers.CalendarManager;
+import managers.ClapsManager;
 import managers.FileManager;
 import managers.NewsManager;
 import managers.NotificationManager;
@@ -37,6 +39,7 @@ import models.WriteUpObjects;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.glassfish.jersey.server.JSONP;
 
 @Path("/WebService")
 public class CampusPrimeService {
@@ -63,7 +66,29 @@ public class CampusPrimeService {
 		}
 		return userDetails;
 	}
-	
+	@Path("/UpdateUser")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateUser(final String userDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			UserManager userManager= new UserManager();
+			userManager.updateUser(userDetails);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+			response.addProperty(Constants.MESSAGE_KEY, "Succesfully updated the user.");
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in Users "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
 	
 	@Path("/register")
 	@POST
@@ -201,16 +226,16 @@ public class CampusPrimeService {
 		return newsDetails;
 	}
 	@GET
-	@Path("/GetWriteUps")
+	@Path("/GetWriteUps/{userId}")
 	@Produces("application/json")
-	public String WriteUps()
+	public String WriteUps(@PathParam("userId") int userId)
 	{
 		String writeUpDetails  = null;
 		try 
 		{
 			ArrayList<WriteUpObjects> writeUpData = null;
 			WriteUpManager writeUpManager= new WriteUpManager();
-			writeUpData = writeUpManager.GetWriteUps();
+			writeUpData = writeUpManager.GetWriteUps(userId);
 			writeUpDetails = JsonFactory.createWriteUpArray(writeUpData);
 
 		} catch (Exception e)
@@ -493,7 +518,7 @@ public class CampusPrimeService {
 		try 
 		{
 			CalendarManager calendarMgr= new CalendarManager();
-			boolean status = calendarMgr.saveNews(calendarDetails);
+			boolean status = calendarMgr.saveCalendar(calendarDetails);
 			if(status){
 				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
 				response.addProperty(Constants.MESSAGE_KEY, "Your event have been saved to CampusPrime.");
@@ -565,6 +590,150 @@ public class CampusPrimeService {
 	{
 		AudienceManager manager = new AudienceManager();
 		JsonObject response = manager.getYearAndClass();
+		return response.toString();
+	}
+	
+	@Path("/saveClaps")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String saveClaps(final String clapDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			ClapsManager mngr= new ClapsManager();
+			boolean status = mngr.saveClaps(clapDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your reaction have been saved to CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in save claps "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	
+	@Path("/updateClaps")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateClaps(final String clapDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			ClapsManager mngr= new ClapsManager();
+			boolean status = mngr.updateClapCount(clapDetails);
+			if(status){
+				response.addProperty(Constants.STATUS_KEY, Constants.STATUS_SUCCESS);
+				response.addProperty(Constants.MESSAGE_KEY, "Your claps have been updated to CampusPrime.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in update claps "+ e);
+			response.addProperty(Constants.STATUS_KEY, Constants.STATUS_FAILURE);
+			response.addProperty(Constants.MESSAGE_KEY, e.getMessage());
+		}
+		return response.toString();
+	}
+	
+	@Path("/saveAdmin")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String saveAdmin(final String adminDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			AdminManager mngr= new AdminManager();
+			boolean status = mngr.saveAdmins(adminDetails);
+			if(status){
+				JsonFactory.createSuccesseJson(response, "Succesfully given admin power to the user");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in save admin "+ e);
+			JsonFactory.createFailureJson(response, e.getMessage());
+		}
+		return response.toString();
+	}
+	
+	@Path("/updateAdmin")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateAdmin(final String adminDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			AdminManager mngr= new AdminManager();
+			boolean status = mngr.updateAdmins(adminDetails);
+			if(status){
+				JsonFactory.createSuccesseJson(response, "Succesfully updated the admin power of user.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in update admin "+ e);
+			JsonFactory.createFailureJson(response, e.getMessage());
+		}
+		return response.toString();
+	}
+	@Path("/deleteAdmin")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteAdmin(final String adminDetails)
+	{
+		JsonObject response  = new JsonObject();
+		try 
+		{
+			AdminManager mngr= new AdminManager();
+			boolean status = mngr.deleteAdmin(adminDetails);
+			if(status){
+				JsonFactory.createSuccesseJson(response, "Succesfully removed the admin power of user.");
+			}
+			System.out.println(response);
+
+		} catch (Exception e)
+		{
+			System.out.println("error in remove admin "+ e);
+			JsonFactory.createFailureJson(response, e.getMessage());
+		}
+		return response.toString();
+	}
+	
+	@GET
+	@Path("/CheckAndSendMail/{mailId}")
+	public String CheckAndSendMail(@PathParam("mailId") String mailId)
+	{
+		JsonObject response = new JsonObject();
+		try 
+		{
+			UserManager mngr = new UserManager();
+			mngr.checkAndSendMail(mailId);
+			JsonFactory.createSuccesseJson(response, "Succesfully verified and send password "
+					+ "to your mail. Please check your mail.");
+
+		} catch (Exception e)
+		{
+			System.out.println("error in checkand send mail "+ e);
+			JsonFactory.createFailureJson(response, "Unable to perform the action. Either you"
+					+ " entered mail is wrong or please try again after some time");
+		}
 		return response.toString();
 	}
 

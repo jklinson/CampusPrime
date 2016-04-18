@@ -1,20 +1,27 @@
 <div class="row">	
 	<div class="col-lg-9 panel panel-default">
 		<div class="panel-body h-scroll">
-			<div ng-repeat="data in writeups |filter:filterTag"class="media">
+			<div ng-repeat="data in writeups |filter:filterTag" ng-init="data.isCollapsed = true;"class="media">
 		  		<div class="media-left">
-		    		<a href="#">
-		      			<img class="media-object" width="80px"  ng-src={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+data.fileId}} alt="Image not found">
+		    		<a href="">
+		      			<img ng-show="isImage(data.fileType)" class="media-object" width="80px"  ng-src={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+data.fileId}} alt="Image not found">
+                        <video ng-show="!isImage(data.fileType)" width="80px">
+                            <source vsrc={{"http://localhost:8080/RESTfulProject/REST/WebService/download/"+data.fileId}} type={{"video/"+data.fileType}} poster="images/poster-video.png" html5vfix>
+                            Your browser does not support the video tag.
+                        </video>  
 		    		</a>
 		  		</div>
 		  		<div class="media-body">
 		    		<h4 class="media-heading">{{data.title}}</h4>
 		    		<p>{{data.description}}</p>
                     <div class="pull-right action-buttons">
-                        <a href=""><span class="glyphicon glyphicon-pencil" ng-click="updateWriteUps(data)" ng-show="doDisplay(data)"></span></a>
-                        <a href="" class="trash" ng-click="deleteWriteUps(data)" ng-show="doDisplay(data)"><span class="glyphicon glyphicon-trash"></span></a>
-                        <a href=""><img  class ="pull-right" width="20px" src="images/claps.png">
-		    		     <span class ="pull-right" style="margin-right:5px">{{data.clapCount}}</span> </span></a>                        
+                        <div uib-collapse="data.isCollapsed">
+                            <div claps rating="data.myClapCount" read-only="false" max-rating="5" click="updateClaps(param, data)"></div>
+                        </div>
+                        <a href=""><span class="glyphicon glyphicon-pencil pull-right" ng-click="updateWriteUps(data)" ng-show="doDisplay(data)"></span></a>
+                        <a href="" class="trash pull-right" ng-click="deleteWriteUps(data)" ng-show="doDisplay(data)"><span class="glyphicon glyphicon-trash"></span></a>
+                        <a href=""><img  class ="pull-right" ng-click="data.isCollapsed = !data.isCollapsed" style="margin-right:5px" width="20px" src="images/claps.png">
+		    		     <span class ="pull-right" style="margin-right:5px">{{data.clapCount}}</span> </span></a>                                                 
                     </div>
 		    		 
                     
@@ -71,8 +78,37 @@
 	          </div>
 	          <div class="form-group">
 	            <label class="control-label">Select file</label>
-	            <input class="form-control" type='file' file-model='writeUp.file'>
-	          </div>	          
+	            <input class="form-control" type='file' file-model='writeUp.file' 
+                accept="image/png, image/jpeg, video/mp4, video/ogg">
+	          </div>
+              <div class="form-group">
+                <label class="control-label">Allow all users to view this Write ups?</label>
+                <div class="radio"> 
+                    <label><input type="radio" value=1 ng-model="writeUp.allowAll">Yes</label>
+                    <label><input type="radio" value=0 ng-model="writeUp.allowAll">No</label>
+                </div>
+              </div>
+              <div uib-collapse="writeUp.allowAll ==1">
+                <div class="form-group">
+                    <label class="control-label">Target Audience</label></br>
+                    <label class="control-label">Year</label>
+                    <select class="form-control" ng-model="writeUp.year">
+                        <option value="" selected disabled>Please select year</option>
+                        <option ng-repeat="option in yearClassList | unique:'year'" value="{{option.year}}">{{getDisplayYear(option.year)}} 
+                        </option>
+                    </select>
+                </div>	
+                <div class="form-group">
+                    <label ng-show="writeUp.year" class="control-label">Class</label>
+                    <select ng-show="writeUp.year" class="form-control" ng-model="writeUp.classNum">
+                        <option value="" selected disabled>Please select class</option>
+                        <option ng-repeat="option in yearClassList | filter:{year:writeUp.year}" value="{{option.classNum}}">{{option.classNum}}</option>
+                    </select>                  
+                    <div class="checkbox">
+                        <label><input type="checkbox" ng-true-value=1 ng-false-value=0 ng-model="writeUp.isTeacher">Teacher</label>
+                    </div>
+                </div>
+              </div>	          
 	        </form>
 	      </div>
 	      <div class="modal-footer">

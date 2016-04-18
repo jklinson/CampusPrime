@@ -1,0 +1,14 @@
+<div class="cpView" >
+	<div class="row cpHeader">
+		<div class="col-xs-12">
+			<span class="text-center"><h2>Admin</h2></span>
+		</div>
+	</div>
+    <uib-tabset active="activeJustified" justified="true">
+        <uib-tab index="0" heading="Users"><div ng-include="'views/admin/users.html'"></div></uib-tab>
+        <uib-tab index="1" heading="News"><div ng-include="'views/admin/newsAdmin.html'"></div></uib-tab>
+        <uib-tab index="2" heading="Write-ups"><div ng-include="'views/admin/writeUpsAdmin.html'"></div></uib-tab>
+        <uib-tab index="3" heading="Notifications"><div ng-include="'views/admin/notificationAdmin.html'"></div></uib-tab>
+        <uib-tab index="4" heading="Calendar"><div ng-include="'views/admin/calendarAdmin.html'"></div></uib-tab>
+  </uib-tabset>
+</div>

@@ -1,117 +1,135 @@
-<div class="register" >
-	<div class="row regHeader">
+<div class="cpView" >
+	<div class="row cpHeader">
 		<div class="col-xs-12">
 			<span class="text-center"><h2>Register</h2></span>
 		</div>
 	</div>
 	<div class="container-fluid top20">
-		<div class="row">
-			<div class="btn-group col-xs-12">
+		<!--<div class="row">
+			<div class="btn-group col-xs-12 user-tab">
 		        <label class="btn btn-primary col-xs-6" ng-model="selectedRole" uib-btn-radio="'Student'">Student</label>
 		        <label class="btn btn-primary col-xs-6" ng-model="selectedRole" uib-btn-radio="'Teacher'">Teacher</label>
 			</div>
-		</div>
-		<div class="panel panel-default">
-		  <div class="panel-body">
-		    <div></div> class ="row" ng-show ="selectedRole === 'Student'">
-		    	<div class ="col-xs-12">
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Name:</label>
-		    			<input type="text" class="col-xs-8" ng-model="user.name"  placeholder="Enter Name">
-		    		</div>
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Class No:</label>
-		    			<!--<input type="text" class="col-xs-8" ng-model="user.classOrSRoom"  placeholder="Enter Class No">-->
-		    			 <select class="col-xs-8" ng-model="user.classOrSRoom">
-      						<option ng-repeat="option in yearClassList | filter:{year:user.year}" value="{{option.classNum}}">{{option.classNum}}</option>
-    					</select> 
-		    		</div>
-		    	</div>
-		    	<div class ="col-xs-12 top20">
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Email:</label>
-		    			<input type="email" class="col-xs-8" ng-model="user.email"  placeholder="Enter email">
-		    		</div>
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Department:</label>
-		    			<input type="text" class="col-xs-8" ng-model="user.department"  placeholder="Enter department">
-		    		</div>
-		    	</div>
-		    	<div class ="col-xs-12 top20">
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Phone No:</label>
-		    			<input type="tel" class="col-xs-8" ng-model="user.mobileNum"  placeholder="Enter Number">
-		    		</div>
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Register No:</label>
-		    			<input type="text" class="col-xs-8" ng-model="user.uniqueId"  placeholder="Enter register no">
-		    		</div>
-		    	</div>
-		    	<div class ="col-xs-12 top20">
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Password:</label>
-		    			<input type="password" class="col-xs-8" ng-model="user.password"  placeholder="Enter password">
-		    		</div>
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Confirm Password:</label>
-		    			<input type="password" class="col-xs-8" ng-model="user.confirmPassword"  placeholder="Enter confirm password">
-		    		</div>
-		    	</div>
-		    	<div class ="col-xs-12 top20">
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Year:</label>
-		    			<!--<input type="text" class="col-xs-8" ng-model="user.year"  placeholder="Enter year">-->
-		    			<select class="col-xs-8" ng-model="user.year">
-      						<option ng-repeat="option in yearClassList | unique:'year'" value="{{option.year}}">{{getDisplayYear(option.year)}} 
-      						</option>
-    					</select>
-		    		</div>		    		
-		    	</div>
-		    </div>
-		    <div class ="row" ng-show ="selectedRole === 'Teacher'">
-		    	<div class ="col-xs-12">
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Name:</label>
-		    			<input type="text" class="col-xs-8" ng-model="user.name"  placeholder="Enter Name">
-		    		</div>
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Staff room no:</label>
-		    			<input type="text" class="col-xs-8" ng-model="user.classOrSRoom"  placeholder="Enter No">
-		    		</div>
-		    	</div>
-		    	<div class ="col-xs-12 top20">
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Email:</label>
-		    			<input type="email" class="col-xs-8" ng-model="user.email"  placeholder="Enter email">
-		    		</div>
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Staff id:</label>
-		    			<input type="text" class="col-xs-8" ng-model="user.uniqueId"  placeholder="Enter id">
-		    		</div>
-		    	</div>
-		    	<div class ="col-xs-12 top20">
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Phone No:</label>
-		    			<input type="tel" class="col-xs-8" ng-model="user.mobileNum"  placeholder="Enter Number">
-		    		</div>
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Staff department:</label>
-		    			<input type="text" class="col-xs-8" ng-model="user.department"  placeholder="Enter Department">
-		    		</div>
-		    	</div>
-		    	<div class ="col-xs-12 top20">
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Password:</label>
-		    			<input type="password" class="col-xs-8" ng-model="user.password"  placeholder="Enter password">
-		    		</div>
-		    		<div class ="col-xs-6">
-		    			<label class="col-xs-3">Confirm Password:</label>
-		    			<input type="password" class="col-xs-8" ng-model="user.confirmPassword"  placeholder="Enter confirm password">
-		    		</div>
-		    	</div>
-		    		    		
-		    	</div>
-		    </dsiv>
+		</div>-->
+        <uib-tabset active="activeJustified" justified="true">
+            <uib-tab index="0" ng-click="selectedRole='Student'" heading="Student">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form name="student">
+                        <div class ="row">
+                            <div class ="col-xs-12">
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Name:</label>
+                                <div class="col-xs-8"> <input type="text" tabindex="1" class="form-control" ng-model="user.name"  placeholder="Enter Name"></div>
+                                </div>
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Class No:</label>
+                                    <!--<input type="text" class="col-xs-8" ng-model="user.classOrSRoom"  placeholder="Enter Class No">-->
+                                       <div class="col-xs-8">
+                                        <select class="form-control" tabindex="7" ng-model="user.classOrSRoom">
+                                        <option ng-repeat="option in yearClassList | filter:{year:user.year}" value="{{option.classNum}}">{{option.classNum}}</option>
+                                    </select> </div>
+                                </div>
+                            </div>
+                            <div class ="col-xs-12 top20">
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Email:</label>
+                                    <div class="col-xs-8"><input type="email" tabindex="2"  class="form-control" ng-model="user.email"  placeholder="Enter email"></div>
+                                </div>
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Department:</label>
+                                    <div class="col-xs-8"><input type="text" tabindex="8" class="form-control" ng-model="user.department"  placeholder="Enter department"></div>
+                                </div>
+                            </div>
+                            <div class ="col-xs-12 top20">
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Phone No:</label>
+                                   <div class="col-xs-8"> <input type="tel" tabindex="4" class="form-control" ng-model="user.mobileNum"  placeholder="Enter Number"></div>
+                                </div>
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Register No:</label>
+                                    <div class="col-xs-8"><input type="text" tabindex="9" class="form-control" ng-model="user.uniqueId"  placeholder="Enter register no"></div>
+                                </div>
+                            </div>
+                            <div class ="col-xs-12 top20">
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Password:</label>
+                                    <div class="col-xs-8"><input type="password" tabindex="5"  class="form-control" ng-model="user.password"  placeholder="Enter password"></div>
+                                </div>
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Confirm Password:</label>
+                                    <div class="col-xs-8"><input type="password" tabindex="10"  class="form-control" ng-model="user.confirmPassword"  placeholder="Enter confirm password"></div>
+                                </div>
+                            </div>
+                            <div class ="col-xs-12 top20">
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Year:</label>
+                                    <!--<input type="text" class="col-xs-8" ng-model="user.year"  placeholder="Enter year">-->
+                                    <div class="col-xs-8">
+                                    <select tabindex="6" class="form-control" ng-model="user.year">
+                                        <option ng-repeat="option in yearClassList | unique:'year'" value="{{option.year}}">{{getDisplayYear(option.year)}} 
+                                        </option>
+                                    </select>
+                                    </div>
+                                </div>		    		
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>    
+            </uib-tab>
+            <uib-tab index="1" ng-click="selectedRole='Teacher'" heading="Teacher">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form name="teacher">
+                        <div class ="row">
+                            <div class ="col-xs-12">
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Name:</label>
+                                    <div class="col-xs-8"><input type="text" tabindex="11" class="form-control" ng-model="user.name"  placeholder="Enter Name"></div>
+                                </div>
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Staff room no:</label>
+                                    <div class="col-xs-8"><input type="text" tabindex="15" class="form-control" ng-model="user.classOrSRoom"  placeholder="Enter No"></div>
+                                </div>
+                            </div>
+                            <div class ="col-xs-12 top20">
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Email:</label>
+                                    <div class="col-xs-8"><input type="email" tabindex="12" class="form-control" ng-model="user.email"  placeholder="Enter email"></div>
+                                </div>
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Staff id:</label>
+                                    <div class="col-xs-8"><input type="text" tabindex="16" class="form-control" ng-model="user.uniqueId"  placeholder="Enter id"></div>
+                                </div>
+                            </div>
+                            <div class ="col-xs-12 top20">
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3">Phone No:</label>
+                                    <div class="col-xs-8"><input type="tel" tabindex="13" class="form-control" ng-model="user.mobileNum"  placeholder="Enter Number"></div>
+                                </div>
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Staff department:</label>
+                                    <div class="col-xs-8"><input type="text" tabindex="17" class="form-control" ng-model="user.department"  placeholder="Enter Department"></div>
+                                </div>
+                            </div>
+                            <div class ="col-xs-12 top20">
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Password:</label>
+                                    <div class="col-xs-8"><input type="password" tabindex="14" class="form-control" ng-model="user.password"  placeholder="Enter password"></div>
+                                </div>
+                                <div class ="col-xs-6 form-group">
+                                    <label class="col-xs-3 control-label">Confirm Password:</label>
+                                    <div class="col-xs-8"><input type="password" tabindex="18" class="form-control" ng-model="user.confirmPassword"  placeholder="Enter confirm password"></div>
+                                </div>
+                            </div>                                        
+                         </div>
+                        </form>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+		
 		    <div class="row top20">
 				<div class="col-md-12">
 			        <button type="button" class="btn btn-primary btn-md col-md-6 col-md-offset-3" ng-click="register()">Register</button>

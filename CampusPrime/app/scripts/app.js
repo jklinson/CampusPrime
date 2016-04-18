@@ -39,6 +39,17 @@ angular
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl'
       })
+      .state('forgot', {
+        url: '/forgot',
+        parent: 'base',
+        templateUrl: 'views/forgotPassword.html',
+        controller: 'ForgotPaswrdCntrl'
+      })      
+      .state('admin', {
+        url: '/admin',
+        parent: 'base',
+        templateUrl: 'views/admin/adminBase.html'
+      })
       .state('dashboard', {
         url: '/dashboard',
         parent: 'base',

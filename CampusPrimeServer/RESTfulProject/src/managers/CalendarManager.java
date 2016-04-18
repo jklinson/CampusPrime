@@ -28,14 +28,14 @@ public class CalendarManager {
 		return newsDetails;
 	}
 	
-	public boolean saveNews(String newsDetails)throws Exception {
+	public boolean saveCalendar(String eventDetails)throws Exception {
 		boolean response=false;
 		try {
 			    Database database= new Database();
 			    Connection connection = database.Get_Connection();
 				JsonParser parser = new JsonParser();
 				JsonObject jsonObject = new JsonObject();
-				jsonObject = (JsonObject)parser.parse(newsDetails);
+				jsonObject = (JsonObject)parser.parse(eventDetails);
 				System.out.println("2. "+jsonObject.toString());
 				CalendarObject news= new CalendarObject(jsonObject);
 				CalendarHandler handler= new CalendarHandler();

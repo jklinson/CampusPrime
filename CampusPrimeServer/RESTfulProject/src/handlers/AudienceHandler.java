@@ -30,10 +30,16 @@ public class AudienceHandler {
 			obj.setYear(rs.getString("year"));
 			obj.setClassNum(rs.getString("classNum"));
 			obj.setTargetId(rs.getString("targetId"));
+			obj.setIsTeacher(rs.getInt("isTeacher"));
 			objectList.add(obj);
 		}
 		
 		return objectList;
 		
+	}
+	
+	public static String createSelectQuerry(String year, String classNum, int isTeacher){
+		return "(SELECT targetId FROM target_audience where isTeacher = "+isTeacher
+				+ " and classNum = '"+classNum+"' and year = '"+year+"')";
 	}
 }
