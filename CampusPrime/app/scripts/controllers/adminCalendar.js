@@ -48,7 +48,7 @@ angular.module('campusPrime')
                 $scope.events = $scope.events.filter(function(event){
 					if(!user.isTeacher)
 						return (!event.isTeacher && event.year === user.adminOfYear && event.classNum === user.adminOfClass);
-					else if(user.year == 'all')
+					else if(user.email == 'admin@gmail.com')
 						return true;
 					else
 					    return (event.year === user.adminOfYear && event.classNum === user.adminOfClass);

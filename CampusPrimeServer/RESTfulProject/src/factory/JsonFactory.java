@@ -78,7 +78,13 @@ public class JsonFactory {
 		System.out.println("user email verified value "+ usersObject.isEmailVerified());
 		if(usersObject.isEmailVerified()){
 			System.out.println("user email verified value inside if loop "+ usersObject.isEmailVerified());
-			createSuccesseJson(json, "Succesfully loged in.");
+			if(usersObject.isActive()){
+				createSuccesseJson(json, "Succesfully loged in.");
+			}
+			else{
+				createFailureJson(json, "Your account is not approved by admin, please wait till it get approved.");
+			}
+			
 		}
 		else{
 			System.out.println("user email verified value inside if loop "+ usersObject.isEmailVerified());

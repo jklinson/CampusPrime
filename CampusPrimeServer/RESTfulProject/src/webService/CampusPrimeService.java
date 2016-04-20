@@ -139,17 +139,21 @@ public class CampusPrimeService {
 		}
 		return response.toString();
 	}
+	@GET
 	@Path("/verifyEmail/{userId}")
+	@Produces(MediaType.TEXT_PLAIN)
 	public String verifyEmail(@PathParam("userId") int userId)
 	{
 		System.out.println("activate 1. "+userId);
-		String response = "Succesfully verified the email of the user. You can continue with the using of Campus Prime.";
+		String response = "Succesfully verified the email of the user. You can continue with the usage of Campus Prime.";
+		Gson gson = new Gson();
 		try 
 		{
 			UserManager userManager= new UserManager();
 			userManager.verifyEmail(userId);
 			
 			System.out.println(response);
+			
 
 		} catch (Exception e)
 		{
