@@ -65,6 +65,10 @@ angular.module('campusPrime')
                     console.log($scope.events);
                     var user = UserService.getUser();
                     $scope.events = $scope.events.filter(function(event){
+                        if(user.isTeacher){
+                            return (event.isApproved ===1 && (event.isTeacher || event.publishedBy === user.userId 
+                            || event.audienceId  ===17));
+                        }
                             return ((event.isApproved ===1) && ((event.classNum === user.adminOfClass && 
                             event.year === user.adminOfYear) || event.audienceId  ===17));
                     });

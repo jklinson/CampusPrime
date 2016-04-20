@@ -32,8 +32,12 @@ angular.module('campusPrime')
 			    };
 			    var user = UserService.getUser();
 				$scope.notifications = $scope.notifications.filter(function(not){
+					if(user.isTeacher)
+                    {
+                        return (not.isApproved ===1 && (not.isTeacher || not.publishedBy === user.userId || not.audienceId == 17));
+                    }
 						return (not.isApproved ===1 && ((not.audienceId === 17 )
-						||( not.audienceId === user.adminTargetId  )));
+						||( not.audienceId === user.adminTargetId)));
 				});
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs

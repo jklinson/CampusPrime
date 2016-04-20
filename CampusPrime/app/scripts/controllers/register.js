@@ -17,8 +17,15 @@ angular.module('campusPrime')
 		$scope.yearClassList = [];
 
 		$scope.register     = function () {
-			if ($scope.selectedRole === 'Student') $scope.user.isTeacher =0;
-			else $scope.user.isTeacher =1;
+			console.log($scope.activeTab);
+			if ($scope.user.student) {
+				$scope.user.isTeacher =false;
+			}
+			else {
+				$scope.user.isTeacher =true;
+				$scope.user.year = 'all';
+				$scope.user.classOrSRoom = 'all';
+			}
 			$scope.user.isActive =0;
 			$scope.user.isEmailVerified =0;
 

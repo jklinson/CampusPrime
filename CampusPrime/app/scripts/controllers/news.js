@@ -30,6 +30,10 @@ angular.module('campusPrime')
                 };
                 var user = UserService.getUser();
                 $scope.newses = $scope.newses.filter(function(news){
+                    if(user.isTeacher)
+                    {
+                        return (news.isTeacher || news.publishedBy === user.userId || news.audienceId === user.adminTargetId || news.audienceId == 17);
+                    }
                     return (news.audienceId === user.adminTargetId || news.audienceId == 17);
                 });
               }, function errorCallback(response) {

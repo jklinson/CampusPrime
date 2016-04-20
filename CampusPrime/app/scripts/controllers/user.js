@@ -8,7 +8,7 @@
  * Controller of campusPrime
  */
 angular.module('campusPrime')
-	.controller('UserCntrl', function($scope, $location, $http, AlertService, AudienceService) {
+	.controller('UserCntrl', function($scope, $location, $http, AlertService, AudienceService, UserService) {
 
 		$scope.users = [];
         $scope.filterArray = [
@@ -31,6 +31,18 @@ angular.module('campusPrime')
                 console.log('In successCallback '+JSON.stringify(response));
                 
                     $scope.users = response.data;
+                    var user = UserService.getUser();
+                    $scope.users = $scope.users.filter(function(eachUser){
+                        if(eachUser.userId === user.userId)
+                            return false;
+                        else if(!user.isTeacher)
+                            return (!eachUser.isTeacher && eachUser.classOrSRoom === user.adminOfClass && eachUser.year === user.adminOfYear);
+                        else if(user.email == 'admin@gmail.com')
+                            return true;
+                        else
+                            return (eachUser.classOrSRoom === user.adminOfClass && eachUser.year === user.adminOfYear);
+                    });
+                    
                 
               }, function errorCallback(response) {
                 // called asynchronously if an error occurs

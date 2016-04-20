@@ -46,7 +46,12 @@ angular.module('campusPrime')
 			    };
 			    var user = UserService.getUser();
                 $scope.events = $scope.events.filter(function(event){
-                    return (event.year === user.adminOfYear && event.classNum === user.adminOfClass);
+					if(!user.isTeacher)
+						return (!event.isTeacher && event.year === user.adminOfYear && event.classNum === user.adminOfClass);
+					else if(user.year == 'all')
+						return true;
+					else
+					    return (event.year === user.adminOfYear && event.classNum === user.adminOfClass);
                 });
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs

@@ -32,11 +32,16 @@ angular.module('campusPrime')
 			    console.log('In successCallback '+JSON.stringify(response));
 			    if (response.data.status === Constants.success ) {
 			    	$scope.writeups = JSON.parse(response.data.writeups);
-			    };
+			    
 				var user = UserService.getUser();
                 $scope.writeups = $scope.writeups.filter(function(writeup){
+					if(user.isTeacher)
+                    {
+						return (writeup.isTeacher || writeup.audienceId === user.adminTargetId || writeup.audienceId === 17);
+					}
                         return (writeup.audienceId === user.adminTargetId || writeup.audienceId === 17);
                 });
+				}
 			    
 			  }, function errorCallback(response) {
 			    // called asynchronously if an error occurs

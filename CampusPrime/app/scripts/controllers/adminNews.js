@@ -35,7 +35,12 @@ angular.module('campusPrime')
                 };
                 var user = UserService.getUser();
                 $scope.newses = $scope.newses.filter(function(news){
-                    return (news.year === user.adminOfYear && news.classNum === user.adminOfClass);
+                    if(!user.isTeacher)
+						return (!news.isTeacher && news.year === user.adminOfYear && news.classNum === user.adminOfClass);
+					else if(user.email == 'admin@gmail.com')
+						return true;
+					else
+					    return (news.year === user.adminOfYear && news.classNum === user.adminOfClass);
                 });
               }, function errorCallback(response) {
                 // called asynchronously if an error occurs
