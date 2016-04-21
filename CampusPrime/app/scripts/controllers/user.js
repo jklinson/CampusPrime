@@ -37,7 +37,7 @@ angular.module('campusPrime')
                             return false;
                         else if(!user.isTeacher)
                             return (!eachUser.isTeacher && eachUser.classOrSRoom === user.adminOfClass && eachUser.year === user.adminOfYear);
-                        else if(user.email == 'admin@gmail.com')
+                        else if(user.email == 'admin@gmail.com' || user.adminOfYear == 'all')
                             return true;
                         else
                             return (eachUser.classOrSRoom === user.adminOfClass && eachUser.year === user.adminOfYear);
