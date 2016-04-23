@@ -34,7 +34,8 @@ angular.module('campusPrime')
                     {
                         return (news.isTeacher || news.publishedBy === user.userId || news.audienceId === user.adminTargetId || news.audienceId == 17);
                     }
-                    return (news.audienceId === user.adminTargetId || news.audienceId == 17);
+                    return (news.year === user.adminOfYear || news.year === user.year
+                    || news.publishedBy === user.userId || news.audienceId == 17);
                 });
               }, function errorCallback(response) {
                 // called asynchronously if an error occurs
@@ -125,29 +126,27 @@ angular.module('campusPrime')
         }
         
         $scope.fetchNewsByUser = function(){
-            $scope.newsFilterTag = {'publishedBy' : UserService.getUserId()};
-            console.log($scope.newsFilterTag);
-            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
+            $scope.newsFilterTag = {
+                                        'publishedBy' : UserService.getUserId(),
+                                        'isApproved' :1
+                                    };
         }
         $scope.fetchAllNewses = function(){
             $scope.newsFilterTag = {'isApproved' :1};
-            console.log($scope.newsFilterTag);
-            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
         }
         $scope.fetchPending = function(){
             $scope.newsFilterTag = {'isApproved' :0};
-            console.log($scope.newsFilterTag);
-            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
         }
         $scope.fetchBatchNewses = function(){
-            $scope.newsFilterTag = {'year' :UserService.getUserYear()};
-            console.log($scope.newsFilterTag);
-            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
+            $scope.newsFilterTag = {'year' :UserService.getUserYear(),
+                                        'isApproved' :1};
         }
         $scope.fetchClassNews = function(){
-            $scope.newsFilterTag = {'year' :UserService.getUserYear(), classNum : UserService.getUserClass()};
-            console.log($scope.newsFilterTag);
-            console.log($filter('filter')( $scope.newses, $scope.newsFilterTag));
+            $scope.newsFilterTag = {
+                                        'year' :UserService.getUserYear(), 
+                                        classNum : UserService.getUserClass(),
+                                        'isApproved' :1
+                                    };
         }
         
         $scope.getClass = function(value){

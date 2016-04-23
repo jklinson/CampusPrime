@@ -34,9 +34,9 @@ angular.module('campusPrime')
 				$scope.notifications = $scope.notifications.filter(function(not){
 					if(user.isTeacher)
                     {
-                        return (not.isApproved ===1 && (not.isTeacher || not.publishedBy === user.userId || not.audienceId == 17));
+                        return (not.isApproved ===1 && (not.isTeacher || not.publishedBy === user.userId || not.audienceId == 21));
                     }
-						return (not.isApproved ===1 && ((not.audienceId === 17 )
+						return (not.isApproved ===1 && ((not.audienceId === 21 )
 						||( not.audienceId === user.adminTargetId)));
 				});
 			  }, function errorCallback(response) {

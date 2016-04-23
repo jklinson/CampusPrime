@@ -37,9 +37,10 @@ angular.module('campusPrime')
                 $scope.writeups = $scope.writeups.filter(function(writeup){
 					if(user.isTeacher)
                     {
-						return (writeup.isTeacher || writeup.audienceId === user.adminTargetId || writeup.audienceId === 17);
+						return (writeup.isTeacher || writeup.audienceId === user.adminTargetId || writeup.audienceId === 21);
 					}
-                        return (writeup.audienceId === user.adminTargetId || writeup.audienceId === 17);
+                        return (writeup.year === user.year|| writeup.year === user.adminOfYear 
+                        	|| writeup.publishedBy === user.userId || writeup.audienceId === 21);
                 });
 				}
 			    

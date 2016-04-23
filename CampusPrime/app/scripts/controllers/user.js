@@ -33,7 +33,7 @@ angular.module('campusPrime')
                     $scope.users = response.data;
                     var user = UserService.getUser();
                     $scope.users = $scope.users.filter(function(eachUser){
-                        if(eachUser.userId === user.userId)
+                        if(eachUser.userId === user.userId || eachUser.email === 'admin@gmail.com')
                             return false;
                         else if(!user.isTeacher)
                             return (!eachUser.isTeacher && eachUser.classOrSRoom === user.adminOfClass && eachUser.year === user.adminOfYear);
