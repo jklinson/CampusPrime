@@ -15,6 +15,7 @@ angular.module('campusPrime')
 		$scope.writeUp = {}; // write-up object for mapping models in popup
 		$scope.writeupTypes = ['Literatur', 'Drawing', 'Pictures', 'Videos'];
         $scope.filterTag = {'isApproved':1};
+		$scope.filterSelected = 'all';
         $scope.userId = UserService.getUserId();
         $scope.editingItem = {};
         $scope.isEditing = false; 

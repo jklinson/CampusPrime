@@ -35,19 +35,19 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="list-group">
-				  <a href="" ng-click="filterTag = {'isApproved':1}" class="list-group-item active"
-                  ng-class="filterTag.isApproved ==1? 'active':''">All Writeups</a>
-				  <a href="" ng-click="filterTag = {'type':'Literatur', 'isApproved':1}" class="list-group-item"
-                  ng-class="filterTag.type == 'Literatur'? 'active':''">Literatur</a>
-				  <a href="" ng-click="filterTag = {'type':'Drawing', 'isApproved':1}" class="list-group-item"
-                  ng-class="filterTag.type == 'Drawing'? 'active':''">Drawing</a>
-				  <a href="" ng-click="filterTag = {'type':'Pictures', 'isApproved':1}" class="list-group-item"
-                  ng-class="filterTag.type == 'Pictures'? 'active':''">Pics</a>
-				  <a href="" ng-click="filterTag = {'type':'Videos', 'isApproved':1}" class="list-group-item"
-                  ng-class="filterTag.type == 'Videos'? 'active':''">Videos</a>
-				  <a href="" ng-click="filterTag = {'publishedBy':userId, 'isApproved':1}" class="list-group-item"
+				  <a href="" ng-click="filterTag = {'isApproved':1};filterSelected = 'all'" class="list-group-item active"
+                  ng-class="filterSelected =='all'? 'active':''">All Writeups</a>
+				  <a href="" ng-click="filterTag = {'type':'Literatur', 'isApproved':1};filterSelected = 'Literature'" class="list-group-item"
+                  ng-class="filterSelected == 'Literature'? 'active':''">Literatur</a>
+				  <a href="" ng-click="filterTag = {'type':'Drawing', 'isApproved':1};filterSelected = 'Drawing'" class="list-group-item"
+                  ng-class="filterSelected == 'Drawing'? 'active':''">Drawing</a>
+				  <a href="" ng-click="filterTag = {'type':'Pictures', 'isApproved':1};filterSelected = 'Pictures';" class="list-group-item"
+                  ng-class="filterSelected == 'Pictures'? 'active':''">Pics</a>
+				  <a href="" ng-click="filterTag = {'type':'Videos', 'isApproved':1};filterSelected = 'Videos';" class="list-group-item"
+                  ng-class="filterSelected == 'Videos'? 'active':''">Videos</a>
+				  <a href="" ng-click="filterTag = {'publishedBy':userId, 'isApproved':1};filterSelected = 'mine';" class="list-group-item"
                   ng-class="filterTag.publishedBy === userId? 'active':''">My Writeups</a>
-				  <a href="" ng-click="filterTag = {'isApproved':0}" class="list-group-item"
+				  <a href="" ng-click="filterTag = {'isApproved':0};filterSelected = 'pending';" class="list-group-item"
                   ng-class="filterTag.isApproved ==0? 'active':''">Pending</a>
 				</div>
 			</div>
