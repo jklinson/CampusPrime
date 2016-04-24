@@ -2,8 +2,9 @@
 	<div class="row cpHeader">
 		<div class="col-xs-12">
 			<span class="text-center"><h2>Register</h2></span>
+            <a href="#/login"><span class="glyphicon glyphicon-arrow-left backButton pull-left"></span></a>
 		</div>
-        <a href="#/login"><span class="glyphicon glyphicon-arrow-left backButton pull-left"></span></a>
+        
 	</div>
 	<div class="container-fluid top20">
 		<!--<div class="row">
@@ -53,13 +54,19 @@
                                 </div>
                             </div>
                             <div class ="col-xs-12 top20">
-                                <div class ="col-xs-6 form-group">
+                                <div class ="col-xs-6 form-group" ng-class="(student.password.$invalid && student.password.$touched)? 'has-error':'';">
                                     <label class="col-xs-3 control-label">Password:</label>
-                                    <div class="col-xs-8"><input type="password" tabindex="5"  class="form-control" ng-model="user.password"  placeholder="Enter password"></div>
+                                    <div class="col-xs-8"><input type="password" name="password" tabindex="5"  pattern=".{8,}" required class="form-control has-error" ng-model="user.password"  placeholder="Enter password">
+                                    <!--<span class="glyphicon glyphicon-remove form-control-feedback"></span>-->
+                                    <p ng-show="student.password.$invalid && student.password.$touched">Minimum 8 charecters needed</p>
+                                    </div>
                                 </div>
-                                <div class ="col-xs-6 form-group">
+                                <div class ="col-xs-6 form-group" ng-class="(student.confirmPassword.$invalid && student.confirmPassword.$touched)? 'has-error':'';">
                                     <label class="col-xs-3 control-label">Confirm Password:</label>
-                                    <div class="col-xs-8"><input type="password" tabindex="10"  class="form-control" ng-model="user.confirmPassword"  placeholder="Enter confirm password"></div>
+                                    <div class="col-xs-8"><input type="password" name="confirmPassword" tabindex="10" pattern=".{8,}"   required class="form-control" ng-model="user.confirmPassword"  placeholder="Enter confirm password">
+                                    <!--<span class="glyphicon glyphicon-remove form-control-feedback"></span>-->
+                                    <p ng-show="student.confirmPassword.$invalid && student.confirmPassword.$touched">Minimum 8 charecters needed</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class ="col-xs-12 top20">
@@ -74,6 +81,9 @@
                                     </div>
                                 </div>		    		
                             </div>
+                            <div class="col-xs-12 top20">
+                                <button type="button" name ="stRegister" ng-disabled="student.$invalid" class="btn btn-primary btn-md col-md-6 col-md-offset-3" ng-click="register()">Register</button>
+                            </div> 
                         </div>
                         </form>
                     </div>
@@ -105,9 +115,11 @@
                                 </div>
                             </div>
                             <div class ="col-xs-12 top20">     
-                                <div class ="col-xs-6 form-group">
+                                <div class ="col-xs-6 form-group" ng-class="(teacher.password.$invalid && teacher.password.$touched)? 'has-error':'';">
                                     <label class="col-xs-3 control-label">Password:</label>
-                                    <div class="col-xs-8"><input type="password" tabindex="13" class="form-control" ng-model="user.password"  placeholder="Enter password"></div>
+                                    <div class="col-xs-8"><input name="password"type="password" pattern=".{8,}" required tabindex="13" class="form-control" ng-model="user.password"  placeholder="Enter password">
+                                    <p ng-show="teacher.password.$invalid && teacher.password.$touched">Minimum 8 charecters needed</p>
+                                </div>
                                 </div>                           
                                 <div class ="col-xs-6 form-group">
                                     <label class="col-xs-3 control-label">Staff department:</label>
@@ -115,22 +127,21 @@
                                 </div>
                             </div>
                             <div class ="col-xs-12 top20">
-                                <div class ="col-xs-6 form-group">
+                                <div class ="col-xs-6 form-group" ng-class="(teacher.confirmPassword.$invalid && teacher.confirmPassword.$touched)? 'has-error':'';">
                                     <label class="col-xs-3 control-label">Confirm Password:</label>
-                                    <div class="col-xs-8"><input type="password" tabindex="14" class="form-control" ng-model="user.confirmPassword"  placeholder="Enter confirm password"></div>
+                                    <div class="col-xs-8"><input type="password" name="confirmPassword" pattern=".{8,}" required tabindex="14" class="form-control" ng-model="user.confirmPassword"  placeholder="Enter confirm password">
+                                    <p ng-show="teacher.confirmPassword.$invalid && teacher.confirmPassword.$touched">Minimum 8 charecters needed</p>
                                 </div>
-                            </div>                                        
+                                </div>
+                            </div> 
+                            <div class="col-xs-12 top20">
+                                <button type="button" ng-disabled="teacher.$invalid" class="btn btn-primary btn-md col-md-6 col-md-offset-3" ng-click="register()">Register</button>
+                            </div>                                       
                          </div>
                         </form>
                     </div>
                 </div>
             </uib-tab>
         </uib-tabset>
-		
-		    <div class="row top20">
-				<div class="col-md-12">
-			        <button type="button" class="btn btn-primary btn-md col-md-6 col-md-offset-3" ng-click="register()">Register</button>
-				</div>
-			</div>
 		  </div>
 </div>
